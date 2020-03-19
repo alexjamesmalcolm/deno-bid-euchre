@@ -10,7 +10,7 @@ const isCard = (a: any): a is Card => {
   return card.rank !== undefined && card.suit !== undefined;
 };
 
-type PlayerPosition = "1" | "2" | "3" | "4";
+export type PlayerPosition = "1" | "2" | "3" | "4";
 
 interface Player {
   name: string;
@@ -18,7 +18,7 @@ interface Player {
   hand: Card[];
 }
 
-interface Team {
+export interface Team {
   players: Player[];
   points: number;
 }

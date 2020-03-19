@@ -1,14 +1,19 @@
 import {
   assertEquals,
-  assertArrayContains,
-  assert
+  assertArrayContains
 } from "https://deno.land/std/testing/asserts.ts";
 import {
   determineIfPhaseIsLegal,
   BiddingPhase,
   isLegalOption,
   getOptions,
-  BidChoice
+  BidChoice,
+  chooseOption,
+  TrumpPickingPhase,
+  TrickTakingPhase,
+  Option,
+  PlayerPosition,
+  Team
 } from "./index.ts";
 
 Deno.test(function shouldBeIllegalToHaveThreeTeams() {
@@ -190,6 +195,45 @@ Deno.test(function shouldHaveDealerBeAbleToSelectAnyChoiceExceptPass() {
     "Going Alone"
   ];
   assertArrayContains(legalOptions, expectedBidChoices);
+});
+
+Deno.test(function shouldBeAbleToPickClubsAsTrump() {
+  const bidWinner: PlayerPosition = "2";
+  const dealerPosition: PlayerPosition = "1";
+  const teams: Team[] = [
+    {
+      players: [
+        { name: "Serena", hand: [], position: "1" },
+        { name: "Noodle", hand: [], position: "3" }
+      ],
+      points: 0
+    },
+    {
+      players: [
+        { name: "Larry", hand: [], position: "2" },
+        { name: "Julia", hand: [], position: "4" }
+      ],
+      points: 0
+    }
+  ];
+  const phase: TrumpPickingPhase = {
+    name: "Picking Trump",
+    dealer: dealerPosition,
+    winningBid: { choice: "3", playerPosition: bidWinner },
+    teams
+  };
+  const option: Option = "Clubs";
+  const actualPhase = chooseOption(option, phase, bidWinner);
+  const expectedPhase: TrickTakingPhase = {
+    name: "Trick-Taking",
+    cardPosition: "2",
+    currentTrick: { followingCards: [] },
+    dealer: dealerPosition,
+    finishedTricks: [],
+    teams,
+    trump: "Clubs"
+  };
+  assertEquals(actualPhase, expectedPhase);
 });
 
 /**
