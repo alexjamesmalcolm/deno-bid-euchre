@@ -1,5 +1,15 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
-import { determineIfPhaseIsLegal, BiddingPhase } from "./index.ts";
+import {
+  assertEquals,
+  assertArrayContains,
+  assert
+} from "https://deno.land/std/testing/asserts.ts";
+import {
+  determineIfPhaseIsLegal,
+  BiddingPhase,
+  isLegalOption,
+  getOptions,
+  BidChoice
+} from "./index.ts";
 
 Deno.test(function shouldBeIllegalToHaveThreeTeams() {
   const phase: BiddingPhase = {
@@ -7,7 +17,6 @@ Deno.test(function shouldBeIllegalToHaveThreeTeams() {
     bidPosition: "2",
     bids: [],
     dealer: "1",
-    leader: "1",
     teams: [
       {
         players: [
@@ -36,7 +45,6 @@ Deno.test(function shouldBeLegalToHaveTwoTeams() {
     bidPosition: "2",
     bids: [],
     dealer: "1",
-    leader: "1",
     teams: [
       {
         players: [
@@ -64,7 +72,6 @@ Deno.test(function shouldBeIllegalForTwoPlayersToShareTheSamePosition() {
     bidPosition: "2",
     bids: [],
     dealer: "1",
-    leader: "1",
     teams: [
       {
         players: [
@@ -92,7 +99,6 @@ Deno.test(function shouldBeIllegalForPlayersToNotHaveOppositePositions() {
     bidPosition: "2",
     bids: [],
     dealer: "1",
-    leader: "1",
     teams: [
       {
         players: [
@@ -112,6 +118,78 @@ Deno.test(function shouldBeIllegalForPlayersToNotHaveOppositePositions() {
   };
   const isPhaseLegal = determineIfPhaseIsLegal(phase);
   assertEquals(isPhaseLegal, false);
+});
+
+Deno.test(function shouldBeIllegalForDealerToPassWhenEveryoneElseHasPassed() {
+  const dealerPosition = "4";
+  const phase: BiddingPhase = {
+    name: "Bidding",
+    bidPosition: dealerPosition,
+    dealer: dealerPosition,
+    bids: [
+      { playerPosition: "1", choice: "Pass" },
+      { playerPosition: "2", choice: "Pass" },
+      { playerPosition: "3", choice: "Pass" }
+    ],
+    teams: [
+      {
+        players: [
+          { name: "Serena", hand: [], position: "1" },
+          { name: "Noodle", hand: [], position: "3" }
+        ],
+        points: 0
+      },
+      {
+        players: [
+          { name: "Larry", hand: [], position: "2" },
+          { name: "Julia", hand: [], position: "4" }
+        ],
+        points: 0
+      }
+    ]
+  };
+  const isLegal = isLegalOption("Pass", phase, dealerPosition);
+  assertEquals(isLegal, false);
+});
+
+Deno.test(function shouldHaveDealerBeAbleToSelectAnyChoiceExceptPass() {
+  const dealerPosition = "4";
+  const phase: BiddingPhase = {
+    name: "Bidding",
+    bidPosition: dealerPosition,
+    dealer: dealerPosition,
+    bids: [
+      { playerPosition: "1", choice: "Pass" },
+      { playerPosition: "2", choice: "Pass" },
+      { playerPosition: "3", choice: "Pass" }
+    ],
+    teams: [
+      {
+        players: [
+          { name: "Serena", hand: [], position: "1" },
+          { name: "Noodle", hand: [], position: "3" }
+        ],
+        points: 0
+      },
+      {
+        players: [
+          { name: "Larry", hand: [], position: "2" },
+          { name: "Julia", hand: [], position: "4" }
+        ],
+        points: 0
+      }
+    ]
+  };
+  const legalOptions = getOptions(phase, dealerPosition);
+  const expectedBidChoices: BidChoice[] = [
+    "3",
+    "4",
+    "5",
+    "6",
+    "Partner's Best Card",
+    "Going Alone"
+  ];
+  assertArrayContains(legalOptions, expectedBidChoices);
 });
 
 /**
