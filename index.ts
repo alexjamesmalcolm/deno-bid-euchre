@@ -378,8 +378,7 @@ const chooseOptionForBiddingPhase = (
 };
 const chooseOptionForPickingTrumpPhase = (
   option: Trump,
-  phase: TrumpPickingPhase,
-  currentPlayer: PlayerPosition
+  phase: TrumpPickingPhase
 ): PartnersBestCardPickingPhase | TrickTakingPhase => {
   const dealer = phase.dealer;
   const partner = getPositionOfPartner(phase.winningBid.playerPosition);
@@ -493,7 +492,7 @@ export const chooseOption = (
   if (phase.name === "Bidding" && isBidChoice(option)) {
     return chooseOptionForBiddingPhase(option, phase, currentPlayer);
   } else if (phase.name === "Picking Trump" && isTrump(option)) {
-    return chooseOptionForPickingTrumpPhase(option, phase, currentPlayer);
+    return chooseOptionForPickingTrumpPhase(option, phase);
   } else if (phase.name === "Picking Partner's Best Card" && isCard(option)) {
     return chooseOptionForPickingPartnersBestCardPhase(option, phase);
   } else if (phase.name === "Trick-Taking" && isCard(option)) {
