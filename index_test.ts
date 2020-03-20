@@ -645,6 +645,52 @@ Deno.test(function shouldBeIllegalToHaveDuplicateCards() {
   assertEquals(isLegal, false);
 });
 
+Deno.test(function shouldBeLegalToHaveOneCardInTrickTakingPhase() {
+  const phase: TrickTakingPhase = {
+    name: "Trick-Taking",
+    teams: [
+      {
+        players: [
+          {
+            hand: [{ rank: "10", suit: "Clubs" }],
+            name: "Serena",
+            position: "1"
+          },
+          {
+            hand: [{ rank: "10", suit: "Diamonds" }],
+            name: "Noodle",
+            position: "3"
+          }
+        ],
+        points: 0
+      },
+      {
+        players: [
+          {
+            hand: [{ rank: "10", suit: "Hearts" }],
+            name: "Serena",
+            position: "2"
+          },
+          {
+            hand: [{ rank: "10", suit: "Spades" }],
+            name: "Serena",
+            position: "4"
+          }
+        ],
+        points: 0
+      }
+    ],
+    dealer: "1",
+    cardPosition: "2",
+    currentTrick: { followingCards: [] },
+    finishedTricks: [],
+    trump: "Clubs",
+    winningBid: { choice: "3", playerPosition: "2" }
+  };
+  const isLegal = determineIfPhaseIsLegal(phase);
+  assertEquals(isLegal, true);
+});
+
 /**
  * 1) We'll design what a game state should look like, things to consider in bid are: 4 players, 2 teams, define the phases, shuffling, dealing, tricks
  * 2) We're going to test if we can get options for a particular game state

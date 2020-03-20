@@ -135,7 +135,7 @@ export const determineIfPhaseIsLegal = (phase: Phase): boolean => {
   const players: Player[] = phase.teams[0].players.concat(
     phase.teams[1].players
   );
-  if (!players.every(player => player.hand.length === 6)) {
+  if (phase.name !== "Trick-Taking" && !players.every(player => player.hand.length === 6)) {
     return false;
   }
   const cards: Card[] = players.reduce(
@@ -480,7 +480,7 @@ const chooseOptionForPickingPartnersBestCardPhase = (
 //   option: Card,
 //   phase: TrickTakingPhase,
 //   currentPlayer: PlayerPosition
-// ): TrickTakingPhase | BiddingPhase => {
+// ): TrickTakingPhase | BiddingPhase | GameOverPhase => {
 //   const isLastTrick: boolean = phase.finishedTricks.length === 5;
 //   const isLastCardInTrick: boolean =
 //     phase.currentTrick.leadingCard &&
