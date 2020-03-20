@@ -239,6 +239,33 @@ Deno.test(function shouldBeAbleToPickClubsAsTrump() {
   assertEquals(actualPhase, expectedPhase);
 });
 
+Deno.test(function shouldBeIllegalToHaveNoCardsInHandsInBiddingPhase() {
+  const phase: BiddingPhase = {
+    name: "Bidding",
+    bidPosition: "2",
+    dealer: "1",
+    bids: [],
+    teams: [
+      {
+        players: [
+          { hand: [], name: "Noodle", position: "1" },
+          { hand: [], name: "Serena", position: "3" }
+        ],
+        points: 0
+      },
+      {
+        players: [
+          { hand: [], name: "Julia", position: "2" },
+          { hand: [], name: "Christa", position: "4" }
+        ],
+        points: 0
+      }
+    ]
+  };
+  const isLegal = determineIfPhaseIsLegal(phase);
+  assertEquals(isLegal, false);
+});
+
 /**
  * 1) We'll design what a game state should look like, things to consider in bid are: 4 players, 2 teams, define the phases, shuffling, dealing, tricks
  * 2) We're going to test if we can get options for a particular game state
