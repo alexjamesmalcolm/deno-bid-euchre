@@ -138,6 +138,23 @@ export const determineIfPhaseIsLegal = (phase: Phase): boolean => {
   if (!players.every(player => player.hand.length === 6)) {
     return false;
   }
+  const cards: Card[] = players.reduce(
+    (accumulator, currentValue) => accumulator.concat(currentValue.hand),
+    [] as Card[]
+  );
+  const isEveryCardUnique = cards.every((firstCard, firstIndex) => {
+    return cards.every((secondCard, secondIndex) => {
+      if (firstIndex === secondIndex) {
+        return true;
+      }
+      return (
+        firstCard.rank !== secondCard.rank || firstCard.suit !== secondCard.suit
+      );
+    });
+  });
+  if (!isEveryCardUnique) {
+    return false;
+  }
   if ([...new Set(players.map(player => player.position))].length !== 4) {
     return false;
   }

@@ -29,24 +29,24 @@ Deno.test(function shouldBeIllegalToHaveThreeTeams() {
           {
             name: "Serena",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "1"
           },
           {
             name: "Noodle",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Diamonds" },
+              { rank: "10", suit: "Diamonds" },
+              { rank: "Jack", suit: "Diamonds" },
+              { rank: "Queen", suit: "Diamonds" },
+              { rank: "King", suit: "Diamonds" },
+              { rank: "Ace", suit: "Diamonds" }
             ],
             position: "3"
           }
@@ -58,24 +58,24 @@ Deno.test(function shouldBeIllegalToHaveThreeTeams() {
           {
             name: "Larry",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Hearts" },
+              { rank: "10", suit: "Hearts" },
+              { rank: "Jack", suit: "Hearts" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "King", suit: "Hearts" },
+              { rank: "Ace", suit: "Hearts" }
             ],
             position: "3"
           },
           {
             name: "Julia",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Spades" },
+              { rank: "10", suit: "Spades" },
+              { rank: "Jack", suit: "Spades" },
+              { rank: "Queen", suit: "Spades" },
+              { rank: "King", suit: "Spades" },
+              { rank: "Ace", suit: "Spades" }
             ],
             position: "4"
           }
@@ -101,24 +101,24 @@ Deno.test(function shouldBeLegalToHaveTwoTeams() {
           {
             name: "Serena",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "1"
           },
           {
             name: "Noodle",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Diamonds" },
+              { rank: "10", suit: "Diamonds" },
+              { rank: "Jack", suit: "Diamonds" },
+              { rank: "Queen", suit: "Diamonds" },
+              { rank: "King", suit: "Diamonds" },
+              { rank: "Ace", suit: "Diamonds" }
             ],
             position: "3"
           }
@@ -130,24 +130,24 @@ Deno.test(function shouldBeLegalToHaveTwoTeams() {
           {
             name: "Larry",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Hearts" },
+              { rank: "10", suit: "Hearts" },
+              { rank: "Jack", suit: "Hearts" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "King", suit: "Hearts" },
+              { rank: "Ace", suit: "Hearts" }
             ],
             position: "2"
           },
           {
             name: "Julia",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Spades" },
+              { rank: "10", suit: "Spades" },
+              { rank: "Jack", suit: "Spades" },
+              { rank: "Queen", suit: "Spades" },
+              { rank: "King", suit: "Spades" },
+              { rank: "Ace", suit: "Spades" }
             ],
             position: "4"
           }
@@ -172,24 +172,24 @@ Deno.test(function shouldBeIllegalForTwoPlayersToShareTheSamePosition() {
           {
             name: "Serena",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "1"
           },
           {
             name: "Noodle",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Diamonds" },
+              { rank: "10", suit: "Diamonds" },
+              { rank: "Jack", suit: "Diamonds" },
+              { rank: "Queen", suit: "Diamonds" },
+              { rank: "King", suit: "Diamonds" },
+              { rank: "Ace", suit: "Diamonds" }
             ],
             position: "1"
           }
@@ -201,24 +201,24 @@ Deno.test(function shouldBeIllegalForTwoPlayersToShareTheSamePosition() {
           {
             name: "Larry",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Hearts" },
+              { rank: "10", suit: "Hearts" },
+              { rank: "Jack", suit: "Hearts" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "King", suit: "Hearts" },
+              { rank: "Ace", suit: "Hearts" }
             ],
             position: "3"
           },
           {
             name: "Julia",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Spades" },
+              { rank: "10", suit: "Spades" },
+              { rank: "Jack", suit: "Spades" },
+              { rank: "Queen", suit: "Spades" },
+              { rank: "King", suit: "Spades" },
+              { rank: "Ace", suit: "Spades" }
             ],
             position: "4"
           }
@@ -243,24 +243,24 @@ Deno.test(function shouldBeIllegalForPlayersToNotHaveOppositePositions() {
           {
             name: "Serena",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "1"
           },
           {
             name: "Noodle",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Diamonds" },
+              { rank: "10", suit: "Diamonds" },
+              { rank: "Jack", suit: "Diamonds" },
+              { rank: "Queen", suit: "Diamonds" },
+              { rank: "King", suit: "Diamonds" },
+              { rank: "Ace", suit: "Diamonds" }
             ],
             position: "2"
           }
@@ -272,24 +272,24 @@ Deno.test(function shouldBeIllegalForPlayersToNotHaveOppositePositions() {
           {
             name: "Larry",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Hearts" },
+              { rank: "10", suit: "Hearts" },
+              { rank: "Jack", suit: "Hearts" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "King", suit: "Hearts" },
+              { rank: "Ace", suit: "Hearts" }
             ],
             position: "3"
           },
           {
             name: "Julia",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Spades" },
+              { rank: "10", suit: "Spades" },
+              { rank: "Jack", suit: "Spades" },
+              { rank: "Queen", suit: "Spades" },
+              { rank: "King", suit: "Spades" },
+              { rank: "Ace", suit: "Spades" }
             ],
             position: "4"
           }
@@ -319,24 +319,24 @@ Deno.test(function shouldBeIllegalForDealerToPassWhenEveryoneElseHasPassed() {
           {
             name: "Serena",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "1"
           },
           {
             name: "Noodle",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "3"
           }
@@ -348,24 +348,24 @@ Deno.test(function shouldBeIllegalForDealerToPassWhenEveryoneElseHasPassed() {
           {
             name: "Larry",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "2"
           },
           {
             name: "Julia",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "4"
           }
@@ -395,24 +395,24 @@ Deno.test(function shouldHaveDealerBeAbleToSelectAnyChoiceExceptPass() {
           {
             name: "Serena",
             hand: [
+              { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "Jack", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Ace", suit: "Clubs" }
             ],
             position: "1"
           },
           {
             name: "Noodle",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Diamonds" },
+              { rank: "10", suit: "Diamonds" },
+              { rank: "Jack", suit: "Diamonds" },
+              { rank: "Queen", suit: "Diamonds" },
+              { rank: "King", suit: "Diamonds" },
+              { rank: "Ace", suit: "Diamonds" }
             ],
             position: "3"
           }
@@ -424,24 +424,24 @@ Deno.test(function shouldHaveDealerBeAbleToSelectAnyChoiceExceptPass() {
           {
             name: "Larry",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Hearts" },
+              { rank: "10", suit: "Hearts" },
+              { rank: "Jack", suit: "Hearts" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "King", suit: "Hearts" },
+              { rank: "Ace", suit: "Hearts" }
             ],
             position: "2"
           },
           {
             name: "Julia",
             hand: [
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" }
+              { rank: "9", suit: "Spades" },
+              { rank: "10", suit: "Spades" },
+              { rank: "Jack", suit: "Spades" },
+              { rank: "Queen", suit: "Spades" },
+              { rank: "King", suit: "Spades" },
+              { rank: "Ace", suit: "Spades" }
             ],
             position: "4"
           }
@@ -471,24 +471,24 @@ Deno.test(function shouldBeAbleToPickClubsAsTrump() {
         {
           name: "Serena",
           hand: [
+            { rank: "9", suit: "Clubs" },
             { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" }
+            { rank: "Jack", suit: "Clubs" },
+            { rank: "Queen", suit: "Clubs" },
+            { rank: "King", suit: "Clubs" },
+            { rank: "Ace", suit: "Clubs" }
           ],
           position: "1"
         },
         {
           name: "Noodle",
           hand: [
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" }
+            { rank: "9", suit: "Diamonds" },
+            { rank: "10", suit: "Diamonds" },
+            { rank: "Jack", suit: "Diamonds" },
+            { rank: "Queen", suit: "Diamonds" },
+            { rank: "King", suit: "Diamonds" },
+            { rank: "Ace", suit: "Diamonds" }
           ],
           position: "3"
         }
@@ -500,24 +500,24 @@ Deno.test(function shouldBeAbleToPickClubsAsTrump() {
         {
           name: "Larry",
           hand: [
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" }
+            { rank: "9", suit: "Hearts" },
+            { rank: "10", suit: "Hearts" },
+            { rank: "Jack", suit: "Hearts" },
+            { rank: "Queen", suit: "Hearts" },
+            { rank: "King", suit: "Hearts" },
+            { rank: "Ace", suit: "Hearts" }
           ],
           position: "2"
         },
         {
           name: "Julia",
           hand: [
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" },
-            { rank: "10", suit: "Clubs" }
+            { rank: "9", suit: "Spades" },
+            { rank: "10", suit: "Spades" },
+            { rank: "Jack", suit: "Spades" },
+            { rank: "Queen", suit: "Spades" },
+            { rank: "King", suit: "Spades" },
+            { rank: "Ace", suit: "Spades" }
           ],
           position: "4"
         }
@@ -643,7 +643,7 @@ Deno.test(function shouldBeIllegalToHaveDuplicateCards() {
   };
   const isLegal = determineIfPhaseIsLegal(phase);
   assertEquals(isLegal, false);
-})
+});
 
 /**
  * 1) We'll design what a game state should look like, things to consider in bid are: 4 players, 2 teams, define the phases, shuffling, dealing, tricks
