@@ -135,6 +135,9 @@ export const determineIfPhaseIsLegal = (phase: Phase): boolean => {
   const players: Player[] = phase.teams[0].players.concat(
     phase.teams[1].players
   );
+  if (!players.every(player => player.hand.length === 6)) {
+    return false;
+  }
   if ([...new Set(players.map(player => player.position))].length !== 4) {
     return false;
   }

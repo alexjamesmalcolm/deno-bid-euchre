@@ -26,15 +26,59 @@ Deno.test(function shouldBeIllegalToHaveThreeTeams() {
     teams: [
       {
         players: [
-          { name: "Serena", hand: [], position: "1" },
-          { name: "Noodle", hand: [], position: "3" }
+          {
+            name: "Serena",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          }
         ],
         points: 0
       },
       {
         players: [
-          { name: "Larry", hand: [], position: "3" },
-          { name: "Julia", hand: [], position: "4" }
+          {
+            name: "Larry",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          },
+          {
+            name: "Julia",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "4"
+          }
         ],
         points: 0
       },
@@ -54,15 +98,59 @@ Deno.test(function shouldBeLegalToHaveTwoTeams() {
     teams: [
       {
         players: [
-          { name: "Serena", hand: [], position: "1" },
-          { name: "Noodle", hand: [], position: "3" }
+          {
+            name: "Serena",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          }
         ],
         points: 0
       },
       {
         players: [
-          { name: "Larry", hand: [], position: "2" },
-          { name: "Julia", hand: [], position: "4" }
+          {
+            name: "Larry",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "2"
+          },
+          {
+            name: "Julia",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "4"
+          }
         ],
         points: 0
       }
@@ -81,15 +169,59 @@ Deno.test(function shouldBeIllegalForTwoPlayersToShareTheSamePosition() {
     teams: [
       {
         players: [
-          { name: "Serena", hand: [], position: "1" },
-          { name: "Noodle", hand: [], position: "1" }
+          {
+            name: "Serena",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          }
         ],
         points: 0
       },
       {
         players: [
-          { name: "Larry", hand: [], position: "3" },
-          { name: "Julia", hand: [], position: "4" }
+          {
+            name: "Larry",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          },
+          {
+            name: "Julia",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "4"
+          }
         ],
         points: 0
       }
@@ -108,15 +240,59 @@ Deno.test(function shouldBeIllegalForPlayersToNotHaveOppositePositions() {
     teams: [
       {
         players: [
-          { name: "Serena", hand: [], position: "1" },
-          { name: "Noodle", hand: [], position: "2" }
+          {
+            name: "Serena",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "2"
+          }
         ],
         points: 0
       },
       {
         players: [
-          { name: "Larry", hand: [], position: "3" },
-          { name: "Julia", hand: [], position: "4" }
+          {
+            name: "Larry",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          },
+          {
+            name: "Julia",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "4"
+          }
         ],
         points: 0
       }
@@ -140,15 +316,59 @@ Deno.test(function shouldBeIllegalForDealerToPassWhenEveryoneElseHasPassed() {
     teams: [
       {
         players: [
-          { name: "Serena", hand: [], position: "1" },
-          { name: "Noodle", hand: [], position: "3" }
+          {
+            name: "Serena",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          }
         ],
         points: 0
       },
       {
         players: [
-          { name: "Larry", hand: [], position: "2" },
-          { name: "Julia", hand: [], position: "4" }
+          {
+            name: "Larry",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "2"
+          },
+          {
+            name: "Julia",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "4"
+          }
         ],
         points: 0
       }
@@ -172,15 +392,59 @@ Deno.test(function shouldHaveDealerBeAbleToSelectAnyChoiceExceptPass() {
     teams: [
       {
         players: [
-          { name: "Serena", hand: [], position: "1" },
-          { name: "Noodle", hand: [], position: "3" }
+          {
+            name: "Serena",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          }
         ],
         points: 0
       },
       {
         players: [
-          { name: "Larry", hand: [], position: "2" },
-          { name: "Julia", hand: [], position: "4" }
+          {
+            name: "Larry",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "2"
+          },
+          {
+            name: "Julia",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "4"
+          }
         ],
         points: 0
       }
@@ -204,15 +468,59 @@ Deno.test(function shouldBeAbleToPickClubsAsTrump() {
   const teams: Team[] = [
     {
       players: [
-        { name: "Serena", hand: [], position: "1" },
-        { name: "Noodle", hand: [], position: "3" }
+        {
+          name: "Serena",
+          hand: [
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" }
+          ],
+          position: "1"
+        },
+        {
+          name: "Noodle",
+          hand: [
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" }
+          ],
+          position: "3"
+        }
       ],
       points: 0
     },
     {
       players: [
-        { name: "Larry", hand: [], position: "2" },
-        { name: "Julia", hand: [], position: "4" }
+        {
+          name: "Larry",
+          hand: [
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" }
+          ],
+          position: "2"
+        },
+        {
+          name: "Julia",
+          hand: [
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" },
+            { rank: "10", suit: "Clubs" }
+          ],
+          position: "4"
+        }
       ],
       points: 0
     }
