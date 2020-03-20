@@ -45,7 +45,7 @@ type Trump = CardSuit | "High" | "Low";
 const isTrump = (a: any): a is Trump =>
   ["Clubs", "Diamonds", "Hearts", "High", "Low", "Spades"].includes(a);
 
-interface Bid {
+export interface Bid {
   playerPosition: PlayerPosition;
   choice: BidChoice;
 }
@@ -64,6 +64,7 @@ export interface TrumpPickingPhase extends BasePhase {
 export interface PartnersBestCardPickingPhase extends BasePhase {
   name: "Picking Partner's Best Card";
   trump: Trump;
+  winningBid: Bid;
   partner: PlayerPosition;
 }
 
@@ -84,6 +85,7 @@ interface FinishedTrick extends InPlayTrick {
 export interface TrickTakingPhase extends BasePhase {
   name: "Trick-Taking";
   trump: Trump;
+  winningBid: Bid;
   cardPosition: PlayerPosition;
   currentTrick: InPlayTrick;
   finishedTricks: FinishedTrick[];
@@ -388,7 +390,8 @@ const chooseOptionForPickingTrumpPhase = (
       dealer,
       trump: option,
       partner,
-      teams
+      teams,
+      winningBid: phase.winningBid
     };
     return nextPhase;
   } else {
@@ -396,6 +399,7 @@ const chooseOptionForPickingTrumpPhase = (
       name: "Trick-Taking",
       dealer,
       trump: option,
+      winningBid: phase.winningBid,
       cardPosition: getNextPosition(dealer),
       teams,
       currentTrick: { followingCards: [] },
@@ -443,6 +447,7 @@ const chooseOptionForPickingPartnersBestCardPhase = (
     playerSittingOut: phase.partner,
     dealer: phase.dealer,
     teams,
+    winningBid: phase.winningBid,
     trump: phase.trump,
     currentTrick: {
       followingCards: []

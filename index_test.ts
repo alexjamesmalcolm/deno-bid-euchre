@@ -13,7 +13,8 @@ import {
   TrickTakingPhase,
   Option,
   PlayerPosition,
-  Team
+  Team,
+  Bid
 } from "./index.ts";
 
 Deno.test(function shouldBeIllegalToHaveThreeTeams() {
@@ -216,10 +217,11 @@ Deno.test(function shouldBeAbleToPickClubsAsTrump() {
       points: 0
     }
   ];
+  const winningBid: Bid = { choice: "3", playerPosition: bidWinner };
   const phase: TrumpPickingPhase = {
     name: "Picking Trump",
     dealer: dealerPosition,
-    winningBid: { choice: "3", playerPosition: bidWinner },
+    winningBid,
     teams
   };
   const option: Option = "Clubs";
@@ -230,6 +232,7 @@ Deno.test(function shouldBeAbleToPickClubsAsTrump() {
     currentTrick: { followingCards: [] },
     dealer: dealerPosition,
     finishedTricks: [],
+    winningBid,
     teams,
     trump: "Clubs"
   };
