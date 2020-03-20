@@ -409,8 +409,7 @@ const chooseOptionForPickingTrumpPhase = (
 };
 const chooseOptionForPickingPartnersBestCardPhase = (
   option: Card,
-  phase: PartnersBestCardPickingPhase,
-  currentPlayer: PlayerPosition
+  phase: PartnersBestCardPickingPhase
 ): TrickTakingPhase => {
   const positionOfPlayerWhoIsPlayingWithoutPartner: PlayerPosition = getPositionOfPartner(
     phase.partner
@@ -491,11 +490,7 @@ export const chooseOption = (
   } else if (phase.name === "Picking Trump" && isTrump(option)) {
     return chooseOptionForPickingTrumpPhase(option, phase, currentPlayer);
   } else if (phase.name === "Picking Partner's Best Card" && isCard(option)) {
-    return chooseOptionForPickingPartnersBestCardPhase(
-      option,
-      phase,
-      currentPlayer
-    );
+    return chooseOptionForPickingPartnersBestCardPhase(option, phase);
   } else if (phase.name === "Trick-Taking" && isCard(option)) {
     // return chooseOptionForTrickTakingPhase(option, phase, currentPlayer);
   }
