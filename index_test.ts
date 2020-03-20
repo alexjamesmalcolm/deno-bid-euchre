@@ -574,6 +574,77 @@ Deno.test(function shouldBeIllegalToHaveNoCardsInHandsInBiddingPhase() {
   assertEquals(isLegal, false);
 });
 
+Deno.test(function shouldBeIllegalToHaveDuplicateCards() {
+  const phase: BiddingPhase = {
+    name: "Bidding",
+    bidPosition: "2",
+    bids: [],
+    dealer: "1",
+    teams: [
+      {
+        players: [
+          {
+            name: "Serena",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "1"
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "3"
+          }
+        ],
+        points: 0
+      },
+      {
+        players: [
+          {
+            name: "Larry",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "2"
+          },
+          {
+            name: "Julia",
+            hand: [
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" }
+            ],
+            position: "4"
+          }
+        ],
+        points: 0
+      }
+    ]
+  };
+  const isLegal = determineIfPhaseIsLegal(phase);
+  assertEquals(isLegal, false);
+})
+
 /**
  * 1) We'll design what a game state should look like, things to consider in bid are: 4 players, 2 teams, define the phases, shuffling, dealing, tricks
  * 2) We're going to test if we can get options for a particular game state
