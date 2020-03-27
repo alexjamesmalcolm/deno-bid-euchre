@@ -124,9 +124,9 @@ const getPositionOfPartner = (position: PlayerPosition): PlayerPosition => {
   }
 };
 
-export const determineIfPhaseIsLegal = (phase: Phase): boolean => {
+export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
   if (phase.teams.length !== 2) {
-    return false;
+    return [false, "Team lengths were not two"];
   }
   const players: Player[] = phase.teams[0].players.concat(
     phase.teams[1].players
@@ -135,27 +135,42 @@ export const determineIfPhaseIsLegal = (phase: Phase): boolean => {
     phase.name !== "Trick-Taking" &&
     !players.every(player => player.hand.length === 6)
   ) {
-    return false;
+    return [
+      false,
+      "Not all players have 6 cards in their hands each even though we aren't in the Trick-Taking Phase yet."
+    ];
   }
-  const cards: Card[] = players.reduce(
+  const cardsInHandsOfPlayers: Card[] = players.reduce(
     (accumulator, currentValue) => accumulator.concat(currentValue.hand),
     [] as Card[]
   );
+  const cardsInPlay: Card[] =
+    phase.name === "Trick-Taking"
+      ? phase.finishedTricks
+          .flatMap(trick => trick.map(({ card }) => card))
+          .concat(phase.currentTrick.map(({ card }) => card))
+      : [];
+  const cards: Card[] = cardsInHandsOfPlayers.concat(cardsInPlay);
+  const hasTwentyFourCards = cards.length === 24;
+  if (!hasTwentyFourCards) {
+    return [false, "Game does not have 24 cards in play."];
+  }
   const isEveryCardUnique = cards.every((firstCard, firstIndex) => {
     return cards.every((secondCard, secondIndex) => {
       if (firstIndex === secondIndex) {
         return true;
       }
-      return (
-        firstCard.rank !== secondCard.rank || firstCard.suit !== secondCard.suit
-      );
+      const areNotTheSame =
+        firstCard.rank !== secondCard.rank ||
+        firstCard.suit !== secondCard.suit;
+      return areNotTheSame;
     });
   });
   if (!isEveryCardUnique) {
-    return false;
+    return [false, "Not every card is unique"];
   }
   if ([...new Set(players.map(player => player.position))].length !== 4) {
-    return false;
+    return [false, "At least two of the players are sharing the same seat."];
   }
   if (
     !phase.teams.every(team => {
@@ -166,9 +181,12 @@ export const determineIfPhaseIsLegal = (phase: Phase): boolean => {
       );
     })
   ) {
-    return false;
+    return [
+      false,
+      "Players of the same team are not sitting opposite each other."
+    ];
   }
-  return true;
+  return [true, "No issue detected"];
 };
 
 const getHigherBid = (bidA: BidChoice, bidB: BidChoice): BidChoice =>
@@ -323,7 +341,7 @@ export const getOptions = (
   phase: Phase,
   currentPlayer: PlayerPosition
 ): Option[] => {
-  if (!determineIfPhaseIsLegal(phase)) {
+  if (!determineIfPhaseIsLegal(phase)[0]) {
     return [];
   }
   if (phase.name === "Bidding") {
@@ -462,25 +480,6 @@ const chooseOptionForPickingPartnersBestCardPhase = (
     } else {
       return team;
     }
-    // return isTeamTheBidWinner
-    // ? {
-    //     ...team,
-    //     players: team.players.map(player => {
-    //       const isPlayerSolo =
-    //         player.position === positionOfPlayerWhoIsPlayingWithoutPartner;
-    //       const changedPlayer: Player = isPlayerSolo
-    //         ? { ...player, hand: player.hand.concat([option]) }
-    //         : {
-    //             ...player,
-    //             hand: player.hand.filter(
-    //               card =>
-    //                 card.rank !== option.rank && card.suit !== option.suit
-    //             )
-    //           };
-    //       return changedPlayer;
-    //     })
-    //   }
-    //   : team;
   };
   const teams: FixedLengthArray<[Team, Team]> = [
     mapTeam(phase.teams[0]),
@@ -498,33 +497,87 @@ const chooseOptionForPickingPartnersBestCardPhase = (
     cardPosition: getNextPosition(phase.dealer)
   };
 };
-// const chooseLastCardInLastTrickThenMoveDealerAndRedeal = (option: Card, phase: TrickTakingPhase, currentPlayer: PlayerPosition): BiddingPhase => {};
-// const chooseOptionForTrickTakingPhase = (
-//   option: Card,
-//   phase: TrickTakingPhase,
-//   currentPlayer: PlayerPosition
-// ): TrickTakingPhase | BiddingPhase | GameOverPhase => {
-//   const isLastTrick: boolean = phase.finishedTricks.length === 5;
-//   const isLastCardInTrick: boolean =
-//     phase.currentTrick.leadingCard &&
-//     phase.currentTrick.followingCards.length === 3;
-//   if (isLastTrick && isLastCardInTrick) {
-//     return chooseLastCardInLastTrickThenMoveDealerAndRedeal(option, phase, currentPlayer);
-//   }
-//   const nextPhase: TrickTakingPhase = {
-//     name: "Trick-Taking",
-//     dealer: phase.dealer,
-//     trump: phase.trump,
-//     cardPosition: getNextPosition(phase.cardPosition),
+const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
+  option: Card,
+  phase: TrickTakingPhase,
+  currentPlayer: PlayerPosition
+): BiddingPhase => {
+  return {
+    name: "Bidding",
+    bidPosition: "1",
+    bids: [],
+    dealer: "1",
+    teams: phase.teams
+  };
+};
+const chooseOptionForTrickTakingPhase = (
+  option: Card,
+  phase: TrickTakingPhase,
+  currentPlayer: PlayerPosition
+): TrickTakingPhase | BiddingPhase | GameOverPhase => {
+  const {
+    currentTrick,
+    finishedTricks,
+    dealer,
+    trump,
+    winningBid,
+    playerSittingOut,
+    teams,
+    cardPosition
+  } = phase;
+  const isLastTrick: boolean = finishedTricks.length === 5;
+  const isLastCardInTrick: boolean = currentTrick.length === 3;
+  if (isLastTrick && isLastCardInTrick) {
+    return chooseLastCardInLastTrickThenMoveDealerAndDeal(
+      option,
+      phase,
+      currentPlayer
+    );
+  }
 
-//   };
-//   return nextPhase;
-// };
+  if (isLastCardInTrick) {
+    const nextPhase: TrickTakingPhase = {
+      name: "Trick-Taking",
+      cardPosition: getNextPosition(cardPosition),
+      currentTrick: [...currentTrick, { owner: currentPlayer, card: option }],
+      dealer,
+      finishedTricks: [
+        ...finishedTricks,
+        [
+          currentTrick[0],
+          currentTrick[1],
+          currentTrick[2],
+          { owner: currentPlayer, card: option }
+        ]
+      ],
+      trump,
+      winningBid,
+      playerSittingOut,
+      // teams: [{ ...teams[0] }, { ...teams[1] }]
+      teams
+    };
+    return nextPhase;
+  } else {
+    const nextPhase: TrickTakingPhase = {
+      name: "Trick-Taking",
+      cardPosition: getNextPosition(cardPosition),
+      currentTrick: [...currentTrick, { owner: currentPlayer, card: option }],
+      dealer,
+      finishedTricks,
+      trump,
+      winningBid,
+      playerSittingOut,
+      // teams: [{ ...teams[0] }, { ...teams[1] }]
+      teams
+    };
+    return nextPhase;
+  }
+};
 export const chooseOption = (
   option: Option,
   phase: Phase,
   currentPlayer: PlayerPosition
-): Phase => {
+): Phase | GameOverPhase => {
   if (
     !isLegalOption(option, phase, currentPlayer) ||
     !determineIfPhaseIsLegal(phase)
@@ -539,7 +592,7 @@ export const chooseOption = (
   } else if (phase.name === "Picking Partner's Best Card" && isCard(option)) {
     return chooseOptionForPickingPartnersBestCardPhase(option, phase);
   } else if (phase.name === "Trick-Taking" && isCard(option)) {
-    // return chooseOptionForTrickTakingPhase(option, phase, currentPlayer);
+    return chooseOptionForTrickTakingPhase(option, phase, currentPlayer);
   }
   return phase;
 };

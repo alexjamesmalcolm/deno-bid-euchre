@@ -86,7 +86,7 @@ Deno.test(function shouldBeIllegalToHaveThreeTeams() {
       }
     ]
   };
-  const isPhaseLegal = determineIfPhaseIsLegal(phase);
+  const [isPhaseLegal] = determineIfPhaseIsLegal(phase);
   assertEquals(isPhaseLegal, false);
 });
 
@@ -157,7 +157,7 @@ Deno.test(function shouldBeLegalToHaveTwoTeams() {
       }
     ]
   };
-  const isPhaseLegal = determineIfPhaseIsLegal(phase);
+  const [isPhaseLegal] = determineIfPhaseIsLegal(phase);
   assertEquals(isPhaseLegal, true);
 });
 
@@ -228,7 +228,7 @@ Deno.test(function shouldBeIllegalForTwoPlayersToShareTheSamePosition() {
       }
     ]
   };
-  const isPhaseLegal = determineIfPhaseIsLegal(phase);
+  const [isPhaseLegal] = determineIfPhaseIsLegal(phase);
   assertEquals(isPhaseLegal, false);
 });
 
@@ -299,7 +299,7 @@ Deno.test(function shouldBeIllegalForPlayersToNotHaveOppositePositions() {
       }
     ]
   };
-  const isPhaseLegal = determineIfPhaseIsLegal(phase);
+  const [isPhaseLegal] = determineIfPhaseIsLegal(phase);
   assertEquals(isPhaseLegal, false);
 });
 
@@ -571,7 +571,7 @@ Deno.test(function shouldBeIllegalToHaveNoCardsInHandsInBiddingPhase() {
       }
     ]
   };
-  const isLegal = determineIfPhaseIsLegal(phase);
+  const [isLegal] = determineIfPhaseIsLegal(phase);
   assertEquals(isLegal, false);
 });
 
@@ -642,7 +642,7 @@ Deno.test(function shouldBeIllegalToHaveDuplicateCards() {
       }
     ]
   };
-  const isLegal = determineIfPhaseIsLegal(phase);
+  const [isLegal] = determineIfPhaseIsLegal(phase);
   assertEquals(isLegal, false);
 });
 
@@ -653,12 +653,12 @@ Deno.test(function shouldBeLegalToHaveOneCardInTrickTakingPhase() {
       {
         players: [
           {
-            hand: [{ rank: "10", suit: "Clubs" }],
+            hand: [{ rank: "9", suit: "Clubs" }],
             name: "Serena",
             position: "1"
           },
           {
-            hand: [{ rank: "10", suit: "Diamonds" }],
+            hand: [{ rank: "9", suit: "Diamonds" }],
             name: "Noodle",
             position: "3"
           }
@@ -668,12 +668,12 @@ Deno.test(function shouldBeLegalToHaveOneCardInTrickTakingPhase() {
       {
         players: [
           {
-            hand: [{ rank: "10", suit: "Hearts" }],
+            hand: [{ rank: "9", suit: "Hearts" }],
             name: "Serena",
             position: "2"
           },
           {
-            hand: [{ rank: "10", suit: "Spades" }],
+            hand: [{ rank: "9", suit: "Spades" }],
             name: "Serena",
             position: "4"
           }
@@ -684,17 +684,48 @@ Deno.test(function shouldBeLegalToHaveOneCardInTrickTakingPhase() {
     dealer: "1",
     cardPosition: "2",
     currentTrick: [],
-    finishedTricks: [],
+    finishedTricks: [
+      [
+        { card: { rank: "10", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "Jack", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "Queen", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "King", suit: "Clubs" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "Ace", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "10", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "Jack", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "Queen", suit: "Diamonds" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "King", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "Ace", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "10", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "Jack", suit: "Hearts" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "Queen", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "King", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "Ace", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "10", suit: "Spades" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "Jack", suit: "Spades" }, owner: "1" },
+        { card: { rank: "Queen", suit: "Spades" }, owner: "1" },
+        { card: { rank: "King", suit: "Spades" }, owner: "1" },
+        { card: { rank: "Ace", suit: "Spades" }, owner: "1" }
+      ]
+    ],
     trump: "Clubs",
     winningBid: { choice: "3", playerPosition: "2" }
   };
-  const isLegal = determineIfPhaseIsLegal(phase);
-  assertEquals(isLegal, true);
+  const [isLegal, reason] = determineIfPhaseIsLegal(phase);
+  assertEquals(isLegal, true, reason);
 });
 
 Deno.test(function shouldReturnBiddingPhaseOnceLastTrickIsTaken() {
   const currentPlayer = "1";
-  const lastCard: Card = { rank: "Ace", suit: "Hearts" };
+  const lastCard: Card = { rank: "Ace", suit: "Clubs" };
   const phase: TrickTakingPhase = {
     name: "Trick-Taking",
     trump: "High",
@@ -717,40 +748,48 @@ Deno.test(function shouldReturnBiddingPhaseOnceLastTrickIsTaken() {
     ],
     currentTrick: [
       { card: { rank: "9", suit: "Clubs" }, owner: "2" },
-      { card: { rank: "9", suit: "Clubs" }, owner: "3" },
-      { card: { rank: "9", suit: "Clubs" }, owner: "4" }
+      { card: { rank: "10", suit: "Clubs" }, owner: "3" },
+      { card: { rank: "Jack", suit: "Clubs" }, owner: "4" }
     ],
     finishedTricks: [
       [
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+        { card: { rank: "Queen", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "King", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "10", suit: "Diamonds" }, owner: "1" }
       ],
       [
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+        { card: { rank: "Jack", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "Queen", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "King", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "Ace", suit: "Diamonds" }, owner: "1" }
       ],
       [
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+        { card: { rank: "9", suit: "Spades" }, owner: "1" },
+        { card: { rank: "10", suit: "Spades" }, owner: "1" },
+        { card: { rank: "Jack", suit: "Spades" }, owner: "1" },
+        { card: { rank: "Queen", suit: "Spades" }, owner: "1" }
       ],
       [
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
-        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+        { card: { rank: "King", suit: "Spades" }, owner: "1" },
+        { card: { rank: "Ace", suit: "Spades" }, owner: "1" },
+        { card: { rank: "9", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "10", suit: "Hearts" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "Jack", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "Queen", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "King", suit: "Hearts" }, owner: "1" },
+        { card: { rank: "Ace", suit: "Hearts" }, owner: "1" }
       ]
     ],
     cardPosition: currentPlayer,
     dealer: currentPlayer
   };
-  const option = getOptions(phase, "1");
-  const nextPhase = chooseOption(option[0], phase, currentPlayer);
+  const [isLegal, reason] = determineIfPhaseIsLegal(phase);
+  assertEquals(isLegal, true, reason);
+  const options = getOptions(phase, "1");
+  const nextPhase = chooseOption(options[0], phase, currentPlayer);
   assertEquals(nextPhase.name, "Bidding");
 });
 
