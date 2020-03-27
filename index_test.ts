@@ -14,8 +14,10 @@ import {
   Option,
   PlayerPosition,
   Team,
-  Bid
+  Bid,
+  Card
 } from "./index.ts";
+import FixedLengthArray from "./FixedLengthArray.ts";
 
 Deno.test(function shouldBeIllegalToHaveThreeTeams() {
   const phase: BiddingPhase = {
@@ -81,8 +83,7 @@ Deno.test(function shouldBeIllegalToHaveThreeTeams() {
           }
         ],
         points: 0
-      },
-      { players: [], points: 0 }
+      }
     ]
   };
   const isPhaseLegal = determineIfPhaseIsLegal(phase);
@@ -465,7 +466,7 @@ Deno.test(function shouldHaveDealerBeAbleToSelectAnyChoiceExceptPass() {
 Deno.test(function shouldBeAbleToPickClubsAsTrump() {
   const bidWinner: PlayerPosition = "2";
   const dealerPosition: PlayerPosition = "1";
-  const teams: Team[] = [
+  const teams: FixedLengthArray<[Team, Team]> = [
     {
       players: [
         {
@@ -537,7 +538,7 @@ Deno.test(function shouldBeAbleToPickClubsAsTrump() {
   const expectedPhase: TrickTakingPhase = {
     name: "Trick-Taking",
     cardPosition: "2",
-    currentTrick: { followingCards: [] },
+    currentTrick: [],
     dealer: dealerPosition,
     finishedTricks: [],
     winningBid,
@@ -682,7 +683,7 @@ Deno.test(function shouldBeLegalToHaveOneCardInTrickTakingPhase() {
     ],
     dealer: "1",
     cardPosition: "2",
-    currentTrick: { followingCards: [] },
+    currentTrick: [],
     finishedTricks: [],
     trump: "Clubs",
     winningBid: { choice: "3", playerPosition: "2" }
@@ -690,6 +691,75 @@ Deno.test(function shouldBeLegalToHaveOneCardInTrickTakingPhase() {
   const isLegal = determineIfPhaseIsLegal(phase);
   assertEquals(isLegal, true);
 });
+
+Deno.test(function shouldReturnBiddingPhaseOnceLastTrickIsTaken() {
+  const currentPlayer = "1";
+  const lastCard: Card = { rank: "Ace", suit: "Hearts" };
+  const phase: TrickTakingPhase = {
+    name: "Trick-Taking",
+    trump: "High",
+    winningBid: { choice: "4", playerPosition: "2" },
+    teams: [
+      {
+        points: 0,
+        players: [
+          { name: "Serena", position: "2", hand: [] },
+          { name: "Noodle", hand: [], position: "4" }
+        ]
+      },
+      {
+        points: 0,
+        players: [
+          { name: "Julia", position: "1", hand: [lastCard] },
+          { name: "Larry", position: "3", hand: [] }
+        ]
+      }
+    ],
+    currentTrick: [
+      { card: { rank: "9", suit: "Clubs" }, owner: "2" },
+      { card: { rank: "9", suit: "Clubs" }, owner: "3" },
+      { card: { rank: "9", suit: "Clubs" }, owner: "4" }
+    ],
+    finishedTricks: [
+      [
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+      ],
+      [
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "9", suit: "Clubs" }, owner: "1" }
+      ]
+    ],
+    cardPosition: currentPlayer,
+    dealer: currentPlayer
+  };
+  const option = getOptions(phase, "1");
+  const nextPhase = chooseOption(option[0], phase, currentPlayer);
+  assertEquals(nextPhase.name, "Bidding");
+});
+
+/*
+Test winning a trick
+Test placing a card in a trick
+Test the last trick being taken
+Test the game finishing
+ */
 
 /**
  * 1) We'll design what a game state should look like, things to consider in bid are: 4 players, 2 teams, define the phases, shuffling, dealing, tricks
