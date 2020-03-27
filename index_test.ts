@@ -1,6 +1,7 @@
 import {
   assertEquals,
-  assertArrayContains
+  assertArrayContains,
+  fail
 } from "https://deno.land/std/testing/asserts.ts";
 import {
   determineIfPhaseIsLegal,
@@ -859,6 +860,87 @@ Deno.test(function shouldTestThatTwoCardsInTheSameTrickDoNotHaveTheSameOwner() {
   const [isLegal] = determineIfPhaseIsLegal(phase);
   assertEquals(isLegal, false);
 });
+
+Deno.test(
+  function shouldHaveHandsOfPlayersBeFullOfCardsWhenStartingBiddingPhase() {
+    const currentPlayer = "1";
+    const lastCard: Card = { rank: "Ace", suit: "Clubs" };
+    const phase: TrickTakingPhase = {
+      name: "Trick-Taking",
+      trump: "High",
+      winningBid: { choice: "4", playerPosition: "2" },
+      teams: [
+        {
+          points: 0,
+          players: [
+            { name: "Serena", position: "2", hand: [] },
+            { name: "Noodle", hand: [], position: "4" }
+          ]
+        },
+        {
+          points: 0,
+          players: [
+            { name: "Julia", position: "1", hand: [lastCard] },
+            { name: "Larry", position: "3", hand: [] }
+          ]
+        }
+      ],
+      currentTrick: [
+        { card: { rank: "9", suit: "Clubs" }, owner: "2" },
+        { card: { rank: "10", suit: "Clubs" }, owner: "3" },
+        { card: { rank: "Jack", suit: "Clubs" }, owner: "4" }
+      ],
+      finishedTricks: [
+        [
+          { card: { rank: "Queen", suit: "Clubs" }, owner: "1" },
+          { card: { rank: "King", suit: "Clubs" }, owner: "2" },
+          { card: { rank: "9", suit: "Diamonds" }, owner: "3" },
+          { card: { rank: "10", suit: "Diamonds" }, owner: "4" }
+        ],
+        [
+          { card: { rank: "Jack", suit: "Diamonds" }, owner: "1" },
+          { card: { rank: "Queen", suit: "Diamonds" }, owner: "2" },
+          { card: { rank: "King", suit: "Diamonds" }, owner: "3" },
+          { card: { rank: "Ace", suit: "Diamonds" }, owner: "4" }
+        ],
+        [
+          { card: { rank: "9", suit: "Spades" }, owner: "1" },
+          { card: { rank: "10", suit: "Spades" }, owner: "2" },
+          { card: { rank: "Jack", suit: "Spades" }, owner: "3" },
+          { card: { rank: "Queen", suit: "Spades" }, owner: "4" }
+        ],
+        [
+          { card: { rank: "King", suit: "Spades" }, owner: "1" },
+          { card: { rank: "Ace", suit: "Spades" }, owner: "2" },
+          { card: { rank: "9", suit: "Hearts" }, owner: "3" },
+          { card: { rank: "10", suit: "Hearts" }, owner: "4" }
+        ],
+        [
+          { card: { rank: "Jack", suit: "Hearts" }, owner: "1" },
+          { card: { rank: "Queen", suit: "Hearts" }, owner: "2" },
+          { card: { rank: "King", suit: "Hearts" }, owner: "3" },
+          { card: { rank: "Ace", suit: "Hearts" }, owner: "4" }
+        ]
+      ],
+      cardPosition: currentPlayer,
+      dealer: currentPlayer
+    };
+    const options = getOptions(phase, "1");
+    const nextPhase = chooseOption(options[0], phase, currentPlayer);
+    if (nextPhase.name === "Bidding") {
+      const allPlayersHaveSixCards = nextPhase.teams.every(team =>
+        team.players.every(player => player.hand.length === 6)
+      );
+      assertEquals(
+        allPlayersHaveSixCards,
+        true,
+        "All players should've had six cards but they don't for some reason."
+      );
+    } else {
+      fail("Phase should have been Bidding but wasn't");
+    }
+  }
+);
 
 /*
 Test winning a trick
