@@ -144,6 +144,19 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
     (accumulator, currentValue) => accumulator.concat(currentValue.hand),
     [] as Card[]
   );
+  const doesEachFinishedTrickHaveOnlyOneCardFromEachOwner =
+    phase.name === "Trick-Taking"
+      ? phase.finishedTricks.every(
+          trick =>
+            [...new Set(trick.map(upCard => upCard.owner))].length ===
+            trick.length
+        ) &&
+        [...new Set(phase.currentTrick.map(upCard => upCard.owner))].length ===
+          phase.currentTrick.length
+      : true;
+  if (!doesEachFinishedTrickHaveOnlyOneCardFromEachOwner) {
+    return [false, "One of the "];
+  }
   const cardsInPlay: Card[] =
     phase.name === "Trick-Taking"
       ? phase.finishedTricks
@@ -585,14 +598,21 @@ export const chooseOption = (
     return phase;
   }
 
-  if (phase.name === "Bidding" && isBidChoice(option)) {
-    return chooseOptionForBiddingPhase(option, phase, currentPlayer);
-  } else if (phase.name === "Picking Trump" && isTrump(option)) {
-    return chooseOptionForPickingTrumpPhase(option, phase);
-  } else if (phase.name === "Picking Partner's Best Card" && isCard(option)) {
-    return chooseOptionForPickingPartnersBestCardPhase(option, phase);
-  } else if (phase.name === "Trick-Taking" && isCard(option)) {
-    return chooseOptionForTrickTakingPhase(option, phase, currentPlayer);
+  const getPhase = () => {
+    if (phase.name === "Bidding" && isBidChoice(option)) {
+      return chooseOptionForBiddingPhase(option, phase, currentPlayer);
+    } else if (phase.name === "Picking Trump" && isTrump(option)) {
+      return chooseOptionForPickingTrumpPhase(option, phase);
+    } else if (phase.name === "Picking Partner's Best Card" && isCard(option)) {
+      return chooseOptionForPickingPartnersBestCardPhase(option, phase);
+    } else if (phase.name === "Trick-Taking" && isCard(option)) {
+      return chooseOptionForTrickTakingPhase(option, phase, currentPlayer);
+    }
+    return phase;
+  };
+  const nextPhase: Phase | GameOverPhase = getPhase();
+  if (nextPhase.name === "Game Over") {
+    return nextPhase;
   }
-  return phase;
+  return determineIfPhaseIsLegal(nextPhase) ? nextPhase : phase;
 };
