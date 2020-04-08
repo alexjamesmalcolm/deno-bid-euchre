@@ -54,7 +54,11 @@ const isFirstBidGreaterThanSecond = (
 ): boolean => getHigherBid(first, second) === first;
 
 export const getHigherBids = (bid: BidChoice): BidChoice[] =>
-  bidHierarchy.filter((element) => isFirstBidGreaterThanSecond(element, bid));
+  bidHierarchy.filter(
+    (element) =>
+      element === "Pass" ||
+      (bid !== element && isFirstBidGreaterThanSecond(element, bid))
+  );
 
 const getSameColorSuit = (suit: CardSuit): CardSuit => {
   if (suit === "Clubs") {
