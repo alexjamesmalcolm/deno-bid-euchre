@@ -269,34 +269,32 @@ export const chooseOptionForTrickTakingPhase = (
     );
   }
 
-  // getPositionOfWinnerOfTrick
+  const transformPlayer = (player: Player): Player => ({
+    name: player.name,
+    position: player.position,
+    hand: player.hand.filter((card: Card) => !isSameCard(option, card)),
+  });
+  const transformTeam = (team: Team): Team => ({
+    players: [
+      transformPlayer(team.players[0]),
+      transformPlayer(team.players[1]),
+    ],
+    points: team.points,
+  });
   if (isLastCardInTrick) {
-    const transformPlayer = (player: Player): Player => ({
-      name: player.name,
-      position: player.position,
-      hand: player.hand.filter((card: Card) => !isSameCard(option, card)),
-    });
-    const transformTeam = (team: Team): Team => ({
-      players: [
-        transformPlayer(team.players[0]),
-        transformPlayer(team.players[1]),
-      ],
-      points: team.points,
-    });
+    const trick: FinishedTrick = [
+      currentTrick[0],
+      currentTrick[1],
+      currentTrick[2],
+      { owner: currentPlayer, card: option },
+    ];
+    const trickWinner = getPositionOfWinnerOfTrick(trick, trump);
     const nextPhase: TrickTakingPhase = {
       name: "Trick-Taking",
-      cardPosition: getNextPosition(cardPosition),
+      cardPosition: trickWinner,
       currentTrick: [],
       dealer,
-      finishedTricks: [
-        ...finishedTricks,
-        [
-          currentTrick[0],
-          currentTrick[1],
-          currentTrick[2],
-          { owner: currentPlayer, card: option },
-        ],
-      ],
+      finishedTricks: [...finishedTricks, trick],
       trump,
       winningBid,
       playerSittingOut,
@@ -313,8 +311,7 @@ export const chooseOptionForTrickTakingPhase = (
       trump,
       winningBid,
       playerSittingOut,
-      // teams: [{ ...teams[0] }, { ...teams[1] }]
-      teams,
+      teams: [transformTeam(teams[0]), transformTeam(teams[1])],
     };
     return nextPhase;
   }
