@@ -12,85 +12,13 @@ import {
   CardSuit,
   BidChoice,
 } from "../definitions.ts";
-import FixedLengthArray from "../FixedLengthArray.ts";
 import {
   getNextPosition,
   getCardsOfSuitWhenTrumpOrderedByHierarchyDesc,
   isSameCard,
+  shuffleAndDealFourHands,
+  getHandSliceViaPosition,
 } from "../utils.ts";
-import shuffle from "../shuffle.ts";
-
-const getAllCards = (): Card[] => [
-  { rank: "9", suit: "Clubs" },
-  { rank: "10", suit: "Clubs" },
-  { rank: "Jack", suit: "Clubs" },
-  { rank: "Queen", suit: "Clubs" },
-  { rank: "King", suit: "Clubs" },
-  { rank: "Ace", suit: "Clubs" },
-  { rank: "9", suit: "Diamonds" },
-  { rank: "10", suit: "Diamonds" },
-  { rank: "Jack", suit: "Diamonds" },
-  { rank: "Queen", suit: "Diamonds" },
-  { rank: "King", suit: "Diamonds" },
-  { rank: "Ace", suit: "Diamonds" },
-  { rank: "9", suit: "Hearts" },
-  { rank: "10", suit: "Hearts" },
-  { rank: "Jack", suit: "Hearts" },
-  { rank: "Queen", suit: "Hearts" },
-  { rank: "King", suit: "Hearts" },
-  { rank: "Ace", suit: "Hearts" },
-  { rank: "9", suit: "Spades" },
-  { rank: "10", suit: "Spades" },
-  { rank: "Jack", suit: "Spades" },
-  { rank: "Queen", suit: "Spades" },
-  { rank: "King", suit: "Spades" },
-  { rank: "Ace", suit: "Spades" },
-];
-
-const shuffleAndDealFourHands = (): FixedLengthArray<
-  [
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>
-  ]
-> => {
-  const allCardsShuffled: Card[] = shuffle(getAllCards() as Card[]);
-  return [
-    [
-      allCardsShuffled[0],
-      allCardsShuffled[1],
-      allCardsShuffled[2],
-      allCardsShuffled[3],
-      allCardsShuffled[4],
-      allCardsShuffled[5],
-    ],
-    [
-      allCardsShuffled[6],
-      allCardsShuffled[7],
-      allCardsShuffled[8],
-      allCardsShuffled[9],
-      allCardsShuffled[10],
-      allCardsShuffled[11],
-    ],
-    [
-      allCardsShuffled[12],
-      allCardsShuffled[13],
-      allCardsShuffled[14],
-      allCardsShuffled[15],
-      allCardsShuffled[16],
-      allCardsShuffled[17],
-    ],
-    [
-      allCardsShuffled[18],
-      allCardsShuffled[19],
-      allCardsShuffled[20],
-      allCardsShuffled[21],
-      allCardsShuffled[22],
-      allCardsShuffled[23],
-    ],
-  ];
-};
 
 const getHighestCard = (
   leadingSuit: CardSuit,
@@ -167,26 +95,10 @@ const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
   currentPlayer: PlayerPosition
 ): BiddingPhase => {
   const fourShuffledHands = shuffleAndDealFourHands();
-  const getIndex = (position: PlayerPosition): 0 | 1 | 2 | 3 => {
-    if (position === "1") {
-      return 0;
-    } else if (position === "2") {
-      return 1;
-    } else if (position === "3") {
-      return 2;
-    }
-    return 3;
-  };
-  const getHandSliceViaPosition = (
-    position: PlayerPosition
-  ): FixedLengthArray<[Card, Card, Card, Card, Card, Card]> => {
-    const index = getIndex(position);
-    return fourShuffledHands[index];
-  };
   const mapPlayer = (player: Player): Player => {
     return {
       ...player,
-      hand: [...getHandSliceViaPosition(player.position)],
+      hand: [...getHandSliceViaPosition(player.position, fourShuffledHands)],
     };
   };
   const firstCard: UpCard = phase.currentTrick[0];

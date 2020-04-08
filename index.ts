@@ -7,6 +7,8 @@ import {
   Phase,
   Option,
   GameOverPhase,
+  BiddingPhase,
+  LobbyPlayer,
 } from "./definitions.ts";
 import { chooseOptionForBiddingPhase } from "./choose_option_utils/choose_for_bidding_phase.ts";
 import { chooseOptionForPickingTrumpPhase } from "./choose_option_utils/choose_for_picking_trump_phase.ts";
@@ -16,6 +18,13 @@ import { getOptionsForBiddingPhase } from "./get_options_utils/get_for_bidding_p
 import { getOptionsForTrumpPickingPhase } from "./get_options_utils/get_for_trump_picking_phase.ts";
 import { getOptionsForTrickTakingPhase } from "./get_options_utils/get_for_trick_taking_phase.ts";
 import { getOptionsForPartnersBestCardPickingPhase } from "./get_options_utils/get_for_partners_best_card_picking_phase.ts";
+import FixedLengthArray from "./FixedLengthArray.ts";
+import {
+  randomPlayerPosition,
+  getNextPosition,
+  shuffleAndDealFourHands,
+  getHandSliceViaPosition,
+} from "./utils.ts";
 
 const isCard = (a: any): a is Card => {
   const card = <Card>a;
@@ -167,4 +176,37 @@ export const chooseOption = (
   return nextPhase.name === "Game Over" || determineIfPhaseIsLegal(nextPhase)[0]
     ? nextPhase
     : phase;
+};
+
+export const startGame = (
+  players: FixedLengthArray<
+    [LobbyPlayer, LobbyPlayer, LobbyPlayer, LobbyPlayer]
+  >
+): BiddingPhase | [boolean, string] => {
+  const dealer: PlayerPosition = randomPlayerPosition();
+  const getPlayerInPosition = (position: PlayerPosition): LobbyPlayer =>
+    players.filter((player) => player.position === position)[0];
+  const fourShuffledHands = shuffleAndDealFourHands();
+  const dealPlayer = (position: PlayerPosition): Player => ({
+    ...getPlayerInPosition(position),
+    hand: [...getHandSliceViaPosition(position, fourShuffledHands)],
+  });
+  const phase: BiddingPhase = {
+    name: "Bidding",
+    bids: [],
+    dealer,
+    bidPosition: getNextPosition(dealer),
+    teams: [
+      {
+        points: 0,
+        players: [dealPlayer("1"), dealPlayer("3")],
+      },
+      {
+        points: 0,
+        players: [dealPlayer("2"), dealPlayer("4")],
+      },
+    ],
+  };
+  const result = determineIfPhaseIsLegal(phase);
+  return result[0] ? phase : result;
 };

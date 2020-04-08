@@ -10,9 +10,12 @@ export interface Card {
 
 export type PlayerPosition = "1" | "2" | "3" | "4";
 
-export interface Player {
+export interface LobbyPlayer {
   name: string;
   position: PlayerPosition;
+}
+
+export interface Player extends LobbyPlayer {
   hand: Card[];
 }
 
@@ -92,3 +95,12 @@ export type Phase =
   | TrickTakingPhase;
 
 export type Option = BidChoice | Trump | Card;
+
+export type FourHands = FixedLengthArray<
+  [
+    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
+    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
+    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
+    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>
+  ]
+>;
