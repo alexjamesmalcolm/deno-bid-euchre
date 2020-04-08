@@ -1233,6 +1233,151 @@ Deno.test(function shouldHavePersonWhoWonLastTrickLeadTheNext() {
   }
 });
 
+Deno.test(function shouldBeAbleToGetOptionsForAllPlayers() {
+  const phase: BiddingPhase = {
+    name: "Bidding",
+    bids: [],
+    dealer: "4",
+    bidPosition: "1",
+    teams: [
+      {
+        points: 0,
+        players: [
+          {
+            name: "Julia",
+            position: "1",
+            hand: [
+              {
+                rank: "10",
+                suit: "Diamonds",
+              },
+              {
+                rank: "Queen",
+                suit: "Clubs",
+              },
+              {
+                rank: "King",
+                suit: "Diamonds",
+              },
+              {
+                rank: "Ace",
+                suit: "Hearts",
+              },
+              {
+                rank: "Queen",
+                suit: "Diamonds",
+              },
+              {
+                rank: "10",
+                suit: "Spades",
+              },
+            ],
+          },
+          {
+            name: "Larry",
+            position: "3",
+            hand: [
+              {
+                rank: "King",
+                suit: "Hearts",
+              },
+              {
+                rank: "Queen",
+                suit: "Hearts",
+              },
+              {
+                rank: "9",
+                suit: "Diamonds",
+              },
+              {
+                rank: "10",
+                suit: "Hearts",
+              },
+              {
+                rank: "King",
+                suit: "Spades",
+              },
+              {
+                rank: "King",
+                suit: "Clubs",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        points: 0,
+        players: [
+          {
+            name: "Serena",
+            position: "2",
+            hand: [
+              {
+                rank: "10",
+                suit: "Clubs",
+              },
+              {
+                rank: "Jack",
+                suit: "Spades",
+              },
+              {
+                rank: "9",
+                suit: "Hearts",
+              },
+              {
+                rank: "Jack",
+                suit: "Hearts",
+              },
+              {
+                rank: "9",
+                suit: "Clubs",
+              },
+              {
+                rank: "Ace",
+                suit: "Diamonds",
+              },
+            ],
+          },
+          {
+            name: "Noodle",
+            position: "4",
+            hand: [
+              {
+                rank: "Ace",
+                suit: "Spades",
+              },
+              {
+                rank: "9",
+                suit: "Spades",
+              },
+              {
+                rank: "Jack",
+                suit: "Clubs",
+              },
+              {
+                rank: "Jack",
+                suit: "Diamonds",
+              },
+              {
+                rank: "Queen",
+                suit: "Spades",
+              },
+              {
+                rank: "Ace",
+                suit: "Clubs",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+  getOptions(phase, "1");
+  getOptions(phase, "2");
+  getOptions(phase, "3");
+  getOptions(phase, "4");
+});
+
 /*
 Test winning a trick
 Test placing a card in a trick

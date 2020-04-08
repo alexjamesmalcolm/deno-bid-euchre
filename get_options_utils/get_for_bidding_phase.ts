@@ -8,6 +8,9 @@ export const getOptionsForBiddingPhase = (
   if (phase.bidPosition !== currentPlayer) {
     return [];
   }
+  if (phase.bids.length === 0) {
+    return ["Pass", "3", "4", "5", "6", "Partner's Best Card", "Going Alone"];
+  }
   const highestBid: BidChoice = phase.bids
     .map((bid) => bid.choice)
     .reduce((previousValue, currentValue) =>
