@@ -104,6 +104,13 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
       "Players of the same team are not sitting opposite each other.",
     ];
   }
+
+  if (phase.name === "Trick-Taking" && phase.currentTrick.length >= 4) {
+    return [
+      false,
+      "The current trick cannot have 4 or more cards in it, if it did then it wouldn't be considered the current trick and should instead be one of the finished tricks.",
+    ];
+  }
   return [true, "No issue detected"];
 };
 
@@ -157,8 +164,7 @@ export const chooseOption = (
     return phase;
   };
   const nextPhase: Phase | GameOverPhase = getPhase();
-  if (nextPhase.name === "Game Over") {
-    return nextPhase;
-  }
-  return determineIfPhaseIsLegal(nextPhase) ? nextPhase : phase;
+  return nextPhase.name === "Game Over" || determineIfPhaseIsLegal(nextPhase)[0]
+    ? nextPhase
+    : phase;
 };

@@ -116,3 +116,6 @@ export const getCardsOfSuitWhenTrumpOrderedByHierarchyDesc = (
     }
   }
 };
+
+export const isSameCard = (a: Card, b: Card): boolean =>
+  a.rank === b.rank && a.suit === b.suit;

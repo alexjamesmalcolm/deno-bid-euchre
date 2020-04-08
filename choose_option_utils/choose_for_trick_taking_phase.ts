@@ -16,6 +16,7 @@ import FixedLengthArray from "../FixedLengthArray.ts";
 import {
   getNextPosition,
   getCardsOfSuitWhenTrumpOrderedByHierarchyDesc,
+  isSameCard,
 } from "../utils.ts";
 import shuffle from "../shuffle.ts";
 
@@ -101,11 +102,7 @@ const getHighestCard = (
     trump
   );
   const highestValueCardsThatWereFound = highestValueCardsInTrump.filter(
-    (card) =>
-      cards.some(
-        (trickCard) =>
-          trickCard.rank === card.rank && trickCard.suit === card.suit
-      )
+    (card) => cards.some((trickCard) => isSameCard(trickCard, card))
   );
   return highestValueCardsThatWereFound[0];
 };
@@ -123,16 +120,9 @@ const getPositionOfWinnerOfTrick = (
       }
     )
   );
-  const winner: PlayerPosition = trick.filter(
-    (upCard) =>
-      upCard.card.rank === winningCard.rank &&
-      upCard.card.suit === winningCard.suit
+  const winner: PlayerPosition = trick.filter((upCard) =>
+    isSameCard(upCard.card, winningCard)
   )[0].owner;
-  // const winner: PlayerPosition = trick.find(
-  //   upCard =>
-  //     upCard.card.rank === winningCard.rank &&
-  //     upCard.card.suit === winningCard.suit
-  // ).owner;
   return winner;
 };
 
@@ -279,11 +269,24 @@ export const chooseOptionForTrickTakingPhase = (
     );
   }
 
+  // getPositionOfWinnerOfTrick
   if (isLastCardInTrick) {
+    const transformPlayer = (player: Player): Player => ({
+      name: player.name,
+      position: player.position,
+      hand: player.hand.filter((card: Card) => !isSameCard(option, card)),
+    });
+    const transformTeam = (team: Team): Team => ({
+      players: [
+        transformPlayer(team.players[0]),
+        transformPlayer(team.players[1]),
+      ],
+      points: team.points,
+    });
     const nextPhase: TrickTakingPhase = {
       name: "Trick-Taking",
       cardPosition: getNextPosition(cardPosition),
-      currentTrick: [...currentTrick, { owner: currentPlayer, card: option }],
+      currentTrick: [],
       dealer,
       finishedTricks: [
         ...finishedTricks,
@@ -297,8 +300,7 @@ export const chooseOptionForTrickTakingPhase = (
       trump,
       winningBid,
       playerSittingOut,
-      // teams: [{ ...teams[0] }, { ...teams[1] }]
-      teams,
+      teams: [transformTeam(teams[0]), transformTeam(teams[1])],
     };
     return nextPhase;
   } else {

@@ -1027,6 +1027,109 @@ Deno.test(
   }
 );
 
+Deno.test(function shouldRemoveAllCardsFromTrickWhenLastCardIsPlayed() {
+  const currentPlayer = "4";
+  const option: Option = { rank: "Ace", suit: "Hearts" };
+  const phase: TrickTakingPhase = {
+    name: "Trick-Taking",
+    trump: "High",
+    winningBid: { choice: "4", playerPosition: "2" },
+    teams: [
+      {
+        points: 0,
+        players: [
+          {
+            name: "Serena",
+            position: "2",
+            hand: [
+              { rank: "Ace", suit: "Spades" },
+              { rank: "9", suit: "Clubs" },
+            ],
+          },
+          {
+            name: "Noodle",
+            hand: [
+              { rank: "10", suit: "Hearts" },
+              { rank: "Jack", suit: "Clubs" },
+              option,
+            ],
+            position: currentPlayer,
+          },
+        ],
+      },
+      {
+        points: 0,
+        players: [
+          {
+            name: "Julia",
+            position: "1",
+            hand: [
+              { rank: "King", suit: "Spades" },
+              { rank: "Ace", suit: "Clubs" },
+            ],
+          },
+          {
+            name: "Larry",
+            position: "3",
+            hand: [
+              { rank: "9", suit: "Hearts" },
+              { rank: "10", suit: "Clubs" },
+            ],
+          },
+        ],
+      },
+    ],
+    currentTrick: [
+      { card: { rank: "Jack", suit: "Hearts" }, owner: "1" },
+      { card: { rank: "Queen", suit: "Hearts" }, owner: "2" },
+      { card: { rank: "King", suit: "Hearts" }, owner: "3" },
+    ],
+    finishedTricks: [
+      [
+        // Serena won this trick
+        { card: { rank: "Queen", suit: "Clubs" }, owner: "1" },
+        { card: { rank: "King", suit: "Clubs" }, owner: "2" },
+        { card: { rank: "9", suit: "Diamonds" }, owner: "3" },
+        { card: { rank: "10", suit: "Diamonds" }, owner: "4" },
+      ],
+      [
+        // Noodle won this trick
+        { card: { rank: "Jack", suit: "Diamonds" }, owner: "1" },
+        { card: { rank: "Queen", suit: "Diamonds" }, owner: "2" },
+        { card: { rank: "King", suit: "Diamonds" }, owner: "3" },
+        { card: { rank: "Ace", suit: "Diamonds" }, owner: "4" },
+      ],
+      [
+        // Noodle won this trick
+        { card: { rank: "9", suit: "Spades" }, owner: "1" },
+        { card: { rank: "10", suit: "Spades" }, owner: "2" },
+        { card: { rank: "Jack", suit: "Spades" }, owner: "3" },
+        { card: { rank: "Queen", suit: "Spades" }, owner: "4" },
+      ],
+    ],
+    cardPosition: currentPlayer,
+    dealer: currentPlayer,
+  };
+  const [isLegalPhase, errorMessage] = determineIfPhaseIsLegal(phase);
+  assertEquals(isLegalPhase, true, errorMessage);
+  const options = getOptions(phase, currentPlayer);
+  assertEquals(
+    options.length > 0,
+    true,
+    "Was not able to find any options for this phase"
+  );
+  const nextPhase = chooseOption(option, phase, currentPlayer);
+  if (nextPhase.name !== "Game Over") {
+    const [isLegalPhase, errorMessage] = determineIfPhaseIsLegal(nextPhase);
+    assertEquals(isLegalPhase, true, errorMessage);
+  }
+  if (nextPhase.name === "Trick-Taking") {
+    assertEquals(nextPhase.currentTrick.length, 0);
+  } else {
+    fail("The phase was supposed to be Trick-Taking but it isn't.");
+  }
+});
+
 /*
 Test winning a trick
 Test placing a card in a trick
