@@ -9,7 +9,7 @@ export const getOptionsForBiddingPhase = (
     return [];
   }
   if (phase.bids.length === 0) {
-    return ["Pass", "3", "4", "5", "6", "Partner's Best Card", "Going Alone"];
+    return ["Going Alone", "Partner's Best Card", "6", "5", "4", "3", "Pass"];
   }
   const highestBid: BidChoice = phase.bids
     .map((bid) => bid.choice)
