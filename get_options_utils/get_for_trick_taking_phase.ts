@@ -1,5 +1,8 @@
 import { TrickTakingPhase, PlayerPosition, Card } from "../definitions.ts";
-import { getCardsOfSuitWhenTrumpOrderedByHierarchyDesc } from "../utils.ts";
+import {
+  getCardsOfSuitWhenTrumpOrderedByHierarchyDesc,
+  isSameCard,
+} from "../utils.ts";
 
 export const getOptionsForTrickTakingPhase = (
   phase: TrickTakingPhase,
@@ -15,11 +18,14 @@ export const getOptionsForTrickTakingPhase = (
       phase.trump
     );
     const doesPlayerHaveCardOfSameLeadingSuit = cardsOfSameSuitAsLead.some(
-      (card) => handOfCurrentPlayer.includes(card)
+      (card) =>
+        handOfCurrentPlayer.some((cardInHand) => isSameCard(cardInHand, card))
     );
     if (doesPlayerHaveCardOfSameLeadingSuit) {
       return handOfCurrentPlayer.filter((card) =>
-        cardsOfSameSuitAsLead.includes(card)
+        cardsOfSameSuitAsLead.some((cardOfSameSuitAsLead) =>
+          isSameCard(cardOfSameSuitAsLead, card)
+        )
       );
     }
   }
