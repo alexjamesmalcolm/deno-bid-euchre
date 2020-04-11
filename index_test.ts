@@ -19,6 +19,7 @@ import {
   Option,
   TrickTakingPhase,
   Card,
+  Trump,
 } from "./definitions.ts";
 import FixedLengthArray from "./FixedLengthArray.ts";
 
@@ -1604,6 +1605,91 @@ Deno.test(function shouldHaveOnlyOptionToPlaceCardOfSameSuitIfPlayerHasThem() {
     { rank: "Ace", suit: "Hearts" },
   ]);
 });
+
+Deno.test(
+  function shouldHaveSerenaOnlyBeAbleToPickAceOfDiamondsWhenTrumpIsHeartsAndLeadingCardIsDiamondAndSerenaHasTheJackOfDiamonds() {
+    const currentPlayer: PlayerPosition = "2";
+    const trump: Trump = "Hearts";
+    const phase: TrickTakingPhase = {
+      dealer: "4",
+      cardPosition: "2",
+      finishedTricks: [],
+      winningBid: { choice: "4", playerPosition: currentPlayer },
+      currentTrick: [{ card: { rank: "Queen", suit: "Diamonds" }, owner: "1" }],
+      teams: [
+        {
+          players: [
+            {
+              name: "Julia",
+              position: "1",
+              hand: [
+                { rank: "Jack", suit: "Clubs" },
+                { rank: "Queen", suit: "Clubs" },
+                { rank: "King", suit: "Clubs" },
+                { rank: "Ace", suit: "Clubs" },
+                { rank: "9", suit: "Spades" },
+              ],
+            },
+            {
+              name: "Larry",
+              position: "3",
+              hand: [
+                { rank: "10", suit: "Spades" },
+                { rank: "Jack", suit: "Spades" },
+                { rank: "Queen", suit: "Spades" },
+                { rank: "King", suit: "Spades" },
+                { rank: "Ace", suit: "Spades" },
+                { rank: "9", suit: "Hearts" },
+              ],
+            },
+          ],
+          points: 0,
+        },
+        {
+          players: [
+            {
+              name: "Serena",
+              position: currentPlayer,
+              hand: [
+                { rank: "Jack", suit: "Hearts" },
+                { rank: "Ace", suit: "Diamonds" },
+                { rank: "Jack", suit: "Diamonds" },
+                { rank: "Ace", suit: "Hearts" },
+                { rank: "9", suit: "Clubs" },
+                { rank: "10", suit: "Clubs" },
+              ],
+            },
+            {
+              name: "Noodle",
+              position: "4",
+              hand: [
+                { rank: "10", suit: "Hearts" },
+                { rank: "Queen", suit: "Hearts" },
+                { rank: "King", suit: "Hearts" },
+                { rank: "9", suit: "Diamonds" },
+                { rank: "10", suit: "Diamonds" },
+                { rank: "King", suit: "Diamonds" },
+              ],
+            },
+          ],
+          points: 0,
+        },
+      ],
+      name: "Trick-Taking",
+      trump: "Hearts",
+    };
+    const [isLegalPhase, errorMessage] = determineIfPhaseIsLegal(phase);
+    assertEquals(isLegalPhase, true, errorMessage);
+    const options = getOptions(phase, currentPlayer);
+    assertEquals(
+      options.length,
+      1,
+      `The number of options should be 1 but instead it was ${options.length}`
+    );
+    const expectedOption: Card = { rank: "Ace", suit: "Diamonds" };
+    assertArrayContains(options, [expectedOption]);
+  }
+);
 
 /*
 Test winning a trick

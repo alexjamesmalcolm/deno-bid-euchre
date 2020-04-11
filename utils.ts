@@ -87,7 +87,7 @@ export const getCardsOfSuitWhenTrumpOrderedByHierarchyDesc = (
     ];
     return trump === "Low" ? cards : cards.reverse();
   } else {
-    const leftBowerSuit: CardSuit = getSameColorSuit(suit);
+    const leftBowerSuit: CardSuit = getSameColorSuit(trump);
     if (suit === trump) {
       const cards: Card[] = [
         { rank: "Jack", suit },
