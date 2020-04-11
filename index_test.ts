@@ -1676,7 +1676,7 @@ Deno.test(
         },
       ],
       name: "Trick-Taking",
-      trump: "Hearts",
+      trump,
     };
     const [isLegalPhase, errorMessage] = determineIfPhaseIsLegal(phase);
     assertEquals(isLegalPhase, true, errorMessage);
