@@ -25,8 +25,6 @@ import {
 } from "./definitions.ts";
 import FixedLengthArray from "./FixedLengthArray.ts";
 
-/*
-
 Deno.test(function shouldBeIllegalToHaveThreeTeams() {
   const phase: BiddingPhase = {
     name: "Bidding",
@@ -1694,8 +1692,6 @@ Deno.test(
     assertArrayContains(options, [expectedOption]);
   }
 );
-
-*/
 
 Deno.test(
   function shouldHaveThePersonWhoWonTheBidHaveToPickACardToGiveToTheirPartner() {
