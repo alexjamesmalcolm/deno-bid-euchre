@@ -47,6 +47,7 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
   );
   if (
     phase.name !== "Trick-Taking" &&
+    phase.name !== "Picking Partner's Best Card" &&
     !players.every((player) => player.hand.length === 6)
   ) {
     return [
@@ -166,16 +167,22 @@ export const chooseOption = (
     } else if (phase.name === "Picking Trump" && isTrump(option)) {
       return chooseOptionForPickingTrumpPhase(option, phase);
     } else if (phase.name === "Picking Partner's Best Card" && isCard(option)) {
-      return chooseOptionForPickingPartnersBestCardPhase(option, phase);
+      return chooseOptionForPickingPartnersBestCardPhase(
+        option,
+        phase,
+        currentPlayer
+      );
     } else if (phase.name === "Trick-Taking" && isCard(option)) {
       return chooseOptionForTrickTakingPhase(option, phase, currentPlayer);
     }
     return phase;
   };
   const nextPhase: Phase | GameOverPhase = getPhase();
-  return nextPhase.name === "Game Over" || determineIfPhaseIsLegal(nextPhase)[0]
-    ? nextPhase
-    : phase;
+  if (nextPhase.name === "Game Over") return nextPhase;
+  const [isLegalPhase, errorMessage] = determineIfPhaseIsLegal(nextPhase);
+  if (isLegalPhase) return nextPhase;
+  console.warn(errorMessage);
+  return phase;
 };
 
 export const startGame = (

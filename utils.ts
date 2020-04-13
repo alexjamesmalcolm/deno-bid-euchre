@@ -5,6 +5,8 @@ import {
   Trump,
   Card,
   FourHands,
+  Phase,
+  Player,
 } from "./definitions.ts";
 import FixedLengthArray from "./FixedLengthArray.ts";
 import shuffle from "./shuffle.ts";
@@ -219,3 +221,15 @@ export const getHandSliceViaPosition = (
   fourShuffledHands: FourHands
 ): FixedLengthArray<[Card, Card, Card, Card, Card, Card]> =>
   fourShuffledHands[getIndex(position)];
+
+export const getPlayerByPosition = (
+  position: PlayerPosition,
+  phase: Phase
+): Player => {
+  const players: Player[] = phase.teams[0].players.concat(
+    phase.teams[1].players
+  );
+  const foundPlayer = players.find((player) => player.position === position);
+  if (foundPlayer) return foundPlayer;
+  throw `Could not find player of position ${position}`;
+};

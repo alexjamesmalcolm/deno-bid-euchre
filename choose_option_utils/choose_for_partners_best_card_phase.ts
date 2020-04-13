@@ -7,32 +7,35 @@ import {
   Player,
 } from "../definitions.ts";
 import FixedLengthArray from "../FixedLengthArray.ts";
-import { getNextPosition, getPositionOfPartner } from "../utils.ts";
+import {
+  getNextPosition,
+  getPositionOfPartner,
+  isSameCard,
+  getPlayerByPosition,
+} from "../utils.ts";
 
 export const chooseOptionForPickingPartnersBestCardPhase = (
   option: Card,
-  phase: PartnersBestCardPickingPhase
-): TrickTakingPhase => {
-  const positionOfPlayerWhoIsPlayingWithoutPartner: PlayerPosition = getPositionOfPartner(
-    phase.partner
+  phase: PartnersBestCardPickingPhase,
+  currentPlayer: PlayerPosition
+): TrickTakingPhase | PartnersBestCardPickingPhase => {
+  const partnerPosition: PlayerPosition = phase.partner;
+  const lonelyPlayerPosition: PlayerPosition = getPositionOfPartner(
+    partnerPosition
   );
+  const hasLonelyPlayerAlreadyDiscardedACard =
+    getPlayerByPosition(lonelyPlayerPosition, phase).hand.length === 5;
+  const mapPlayer = (player: Player): Player => ({
+    ...player,
+    hand:
+      player.position === currentPlayer
+        ? player.hand.filter((card) => !isSameCard(card, option))
+        : player.hand.concat([option]),
+  });
   const mapTeam = (team: Team): Team => {
     const isTeamTheBidWinner = team.players.some(
       (player) => player.position === phase.partner
     );
-    const mapPlayer = (player: Player): Player => {
-      const isPlayerSolo =
-        player.position === positionOfPlayerWhoIsPlayingWithoutPartner;
-      const changedPlayer: Player = isPlayerSolo
-        ? { ...player, hand: player.hand.concat([option]) }
-        : {
-            ...player,
-            hand: player.hand.filter(
-              (card) => card.rank !== option.rank && card.suit !== option.suit
-            ),
-          };
-      return changedPlayer;
-    };
     if (isTeamTheBidWinner) {
       const result: Team = {
         ...team,
@@ -43,19 +46,22 @@ export const chooseOptionForPickingPartnersBestCardPhase = (
       return team;
     }
   };
-  const teams: FixedLengthArray<[Team, Team]> = [
-    mapTeam(phase.teams[0]),
-    mapTeam(phase.teams[1]),
-  ];
-  return {
-    name: "Trick-Taking",
-    playerSittingOut: phase.partner,
-    dealer: phase.dealer,
-    teams,
-    winningBid: phase.winningBid,
-    trump: phase.trump,
-    currentTrick: [],
-    finishedTricks: [],
-    cardPosition: getNextPosition(phase.dealer),
-  };
+  if (hasLonelyPlayerAlreadyDiscardedACard) {
+    return {
+      name: "Trick-Taking",
+      playerSittingOut: phase.partner,
+      dealer: phase.dealer,
+      teams: [mapTeam(phase.teams[0]), mapTeam(phase.teams[1])],
+      winningBid: phase.winningBid,
+      trump: phase.trump,
+      currentTrick: [],
+      finishedTricks: [],
+      cardPosition: getNextPosition(phase.dealer),
+    };
+  } else {
+    return {
+      ...phase,
+      teams: [mapTeam(phase.teams[0]), mapTeam(phase.teams[1])],
+    };
+  }
 };

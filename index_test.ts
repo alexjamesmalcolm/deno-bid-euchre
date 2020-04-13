@@ -2,6 +2,7 @@ import {
   assertEquals,
   assertArrayContains,
   fail,
+  assertNotEquals,
 } from "https://deno.land/std/testing/asserts.ts";
 import {
   determineIfPhaseIsLegal,
@@ -20,8 +21,11 @@ import {
   TrickTakingPhase,
   Card,
   Trump,
+  PartnersBestCardPickingPhase,
 } from "./definitions.ts";
 import FixedLengthArray from "./FixedLengthArray.ts";
+
+/*
 
 Deno.test(function shouldBeIllegalToHaveThreeTeams() {
   const phase: BiddingPhase = {
@@ -1690,6 +1694,174 @@ Deno.test(
     assertArrayContains(options, [expectedOption]);
   }
 );
+
+*/
+
+Deno.test(
+  function shouldHaveThePersonWhoWonTheBidHaveToPickACardToGiveToTheirPartner() {
+    const currentPlayer: PlayerPosition = "1";
+    const phase: PartnersBestCardPickingPhase = {
+      name: "Picking Partner's Best Card",
+      dealer: "3",
+      trump: "High",
+      partner: "3",
+      teams: [
+        {
+          points: 0,
+          players: [
+            {
+              name: "Julia",
+              position: "1",
+              hand: [
+                { rank: "Queen", suit: "Diamonds" },
+                { rank: "Jack", suit: "Diamonds" },
+                { rank: "9", suit: "Diamonds" },
+                { rank: "King", suit: "Hearts" },
+                { rank: "Ace", suit: "Diamonds" },
+                { rank: "9", suit: "Clubs" },
+              ],
+            },
+            {
+              name: "Larry",
+              position: "3",
+              hand: [
+                { rank: "10", suit: "Clubs" },
+                { rank: "Ace", suit: "Spades" },
+                { rank: "Jack", suit: "Hearts" },
+                { rank: "9", suit: "Spades" },
+                { rank: "Ace", suit: "Hearts" },
+                { rank: "Jack", suit: "Clubs" },
+              ],
+            },
+          ],
+        },
+        {
+          points: 0,
+          players: [
+            {
+              name: "Serena",
+              position: "2",
+              hand: [
+                { rank: "10", suit: "Hearts" },
+                { rank: "King", suit: "Clubs" },
+                { rank: "Queen", suit: "Clubs" },
+                { rank: "King", suit: "Diamonds" },
+                { rank: "Queen", suit: "Hearts" },
+                { rank: "King", suit: "Spades" },
+              ],
+            },
+            {
+              name: "Noodle",
+              position: "4",
+              hand: [
+                { rank: "Jack", suit: "Spades" },
+                { rank: "9", suit: "Hearts" },
+                { rank: "Queen", suit: "Spades" },
+                { rank: "10", suit: "Diamonds" },
+                { rank: "Ace", suit: "Clubs" },
+                { rank: "10", suit: "Spades" },
+              ],
+            },
+          ],
+        },
+      ],
+      winningBid: {
+        choice: "Partner's Best Card",
+        playerPosition: "1",
+      },
+    };
+    const options = getOptions(phase, currentPlayer);
+    assertEquals(options.length, 6);
+    const nextPhase = chooseOption(options[0], phase, currentPlayer);
+    assertNotEquals(nextPhase, phase);
+  }
+);
+
+Deno.test(function shouldBeAbleToSelectAnyCardWhenPickingPartnersBestCard() {
+  const hand: Card[] = [
+    { rank: "10", suit: "Clubs" },
+    { rank: "Ace", suit: "Spades" },
+    { rank: "Jack", suit: "Hearts" },
+    { rank: "9", suit: "Spades" },
+    { rank: "Ace", suit: "Hearts" },
+    { rank: "Jack", suit: "Clubs" },
+  ];
+  const currentPlayer: PlayerPosition = "3";
+  const phase: PartnersBestCardPickingPhase = {
+    name: "Picking Partner's Best Card",
+    dealer: "3",
+    trump: "High",
+    partner: currentPlayer,
+    teams: [
+      {
+        points: 0,
+        players: [
+          {
+            name: "Julia",
+            position: "1",
+            hand: [
+              { rank: "Queen", suit: "Diamonds" },
+              { rank: "Jack", suit: "Diamonds" },
+              { rank: "9", suit: "Diamonds" },
+              { rank: "King", suit: "Hearts" },
+              { rank: "Ace", suit: "Diamonds" },
+            ],
+          },
+          {
+            name: "Larry",
+            position: currentPlayer,
+            hand,
+          },
+        ],
+      },
+      {
+        points: 0,
+        players: [
+          {
+            name: "Serena",
+            position: "2",
+            hand: [
+              { rank: "10", suit: "Hearts" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "King", suit: "Diamonds" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "King", suit: "Spades" },
+              { rank: "9", suit: "Clubs" },
+            ],
+          },
+          {
+            name: "Noodle",
+            position: "4",
+            hand: [
+              { rank: "Jack", suit: "Spades" },
+              { rank: "9", suit: "Hearts" },
+              { rank: "Queen", suit: "Spades" },
+              { rank: "10", suit: "Diamonds" },
+              { rank: "Ace", suit: "Clubs" },
+              { rank: "10", suit: "Spades" },
+            ],
+          },
+        ],
+      },
+    ],
+    winningBid: {
+      choice: "Partner's Best Card",
+      playerPosition: "1",
+    },
+  };
+  const options = getOptions(phase, currentPlayer);
+  assertArrayContains(options, hand);
+  const expectedPhaseName = "Trick-Taking";
+  options.forEach((option) => {
+    const nextPhase = chooseOption(option, phase, currentPlayer);
+    assertEquals(
+      nextPhase.name === expectedPhaseName,
+      true,
+      `Expected ${expectedPhaseName} but instead got ${nextPhase.name}`
+    );
+  });
+});
 
 /*
 Test winning a trick
