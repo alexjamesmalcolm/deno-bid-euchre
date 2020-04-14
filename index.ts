@@ -77,7 +77,7 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
           .length === phase.currentTrick.length
       : true;
   if (!doesEachFinishedTrickHaveOnlyOneCardFromEachOwner) {
-    return [false, "One of the "];
+    return [false, "One of the finished tricks has more than one card from the same player."];
   }
   const cardsInPlay: Card[] =
     phase.name === "Trick-Taking"
