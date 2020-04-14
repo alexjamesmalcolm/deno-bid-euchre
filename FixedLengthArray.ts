@@ -5,8 +5,7 @@ type ArrayLengthMutationKeys =
   | "shift"
   | "unshift"
   | number;
-type ArrayItems<T extends Array<any>> = T extends Array<infer TItems>
-  ? TItems
+type ArrayItems<T extends Array<any>> = T extends Array<infer TItems> ? TItems
   : never;
 type FixedLengthArray<T extends any[]> = Pick<
   T,

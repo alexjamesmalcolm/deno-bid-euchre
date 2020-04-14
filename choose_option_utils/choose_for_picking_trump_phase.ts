@@ -8,7 +8,7 @@ import { getPositionOfPartner, getNextPosition } from "../utils.ts";
 
 export const chooseOptionForPickingTrumpPhase = (
   option: Trump,
-  phase: TrumpPickingPhase
+  phase: TrumpPickingPhase,
 ): PartnersBestCardPickingPhase | TrickTakingPhase => {
   const dealer = phase.dealer;
   const partner = getPositionOfPartner(phase.winningBid.playerPosition);

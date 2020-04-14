@@ -27,13 +27,13 @@ import {
 } from "./utils.ts";
 
 const isCard = (a: any): a is Card => {
-  const card = <Card>a;
+  const card = <Card> a;
   return card.rank !== undefined && card.suit !== undefined;
 };
 
 const isBidChoice = (a: any): a is BidChoice =>
   ["Pass", "3", "4", "5", "6", "Partner's Best Card", "Going Alone"].includes(
-    a
+    a,
   );
 const isTrump = (a: any): a is Trump =>
   ["Clubs", "Diamonds", "Hearts", "High", "Low", "Spades"].includes(a);
@@ -50,7 +50,7 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
     return [false, "Team lengths were not two"];
   }
   const players: Player[] = phase.teams[0].players.concat(
-    phase.teams[1].players
+    phase.teams[1].players,
   );
   if (
     phase.name !== "Trick-Taking" &&
@@ -64,27 +64,29 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
   }
   const cardsInHandsOfPlayers: Card[] = players.reduce(
     (accumulator, currentValue) => accumulator.concat(currentValue.hand),
-    [] as Card[]
+    [] as Card[],
   );
   const doesEachFinishedTrickHaveOnlyOneCardFromEachOwner =
     phase.name === "Trick-Taking"
       ? phase.finishedTricks.every(
-          (trick) =>
-            [...new Set(trick.map((upCard) => upCard.owner))].length ===
-            trick.length
-        ) &&
+        (trick) =>
+          [...new Set(trick.map((upCard) => upCard.owner))].length ===
+          trick.length,
+      ) &&
         [...new Set(phase.currentTrick.map((upCard) => upCard.owner))]
           .length === phase.currentTrick.length
       : true;
   if (!doesEachFinishedTrickHaveOnlyOneCardFromEachOwner) {
-    return [false, "One of the finished tricks has more than one card from the same player."];
+    return [
+      false,
+      "One of the finished tricks has more than one card from the same player.",
+    ];
   }
-  const cardsInPlay: Card[] =
-    phase.name === "Trick-Taking"
-      ? phase.finishedTricks
-          .flatMap((trick) => trick.map(({ card }) => card))
-          .concat(phase.currentTrick.map(({ card }) => card))
-      : [];
+  const cardsInPlay: Card[] = phase.name === "Trick-Taking"
+    ? phase.finishedTricks
+      .flatMap((trick) => trick.map(({ card }) => card))
+      .concat(phase.currentTrick.map(({ card }) => card))
+    : [];
   const cards: Card[] = cardsInHandsOfPlayers.concat(cardsInPlay);
   const hasTwentyFourCards = cards.length === 24;
   if (!hasTwentyFourCards) {
@@ -95,8 +97,7 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
       if (firstIndex === secondIndex) {
         return true;
       }
-      const areNotTheSame =
-        firstCard.rank !== secondCard.rank ||
+      const areNotTheSame = firstCard.rank !== secondCard.rank ||
         firstCard.suit !== secondCard.suit;
       return areNotTheSame;
     });
@@ -133,7 +134,7 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
 
 export const getOptions = (
   phase: Phase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): Option[] => {
   if (!determineIfPhaseIsLegal(phase)[0]) {
     return [];
@@ -153,13 +154,13 @@ export const getOptions = (
 export const isLegalOption = (
   option: Option,
   phase: Phase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): boolean => getOptions(phase, currentPlayer).includes(option);
 
 export const chooseOption = (
   option: Option,
   phase: Phase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): Phase | GameOverPhase => {
   if (
     !isLegalOption(option, phase, currentPlayer) ||
@@ -177,7 +178,7 @@ export const chooseOption = (
       return chooseOptionForPickingPartnersBestCardPhase(
         option,
         phase,
-        currentPlayer
+        currentPlayer,
       );
     } else if (phase.name === "Trick-Taking" && isCard(option)) {
       return chooseOptionForTrickTakingPhase(option, phase, currentPlayer);
@@ -192,11 +193,9 @@ export const chooseOption = (
   return phase;
 };
 
-export const startGame = (
-  players: FixedLengthArray<
-    [LobbyPlayer, LobbyPlayer, LobbyPlayer, LobbyPlayer]
-  >
-): BiddingPhase | [boolean, string] => {
+export const startGame = (players: FixedLengthArray<
+  [LobbyPlayer, LobbyPlayer, LobbyPlayer, LobbyPlayer]
+>) => {
   const dealer: PlayerPosition = randomPlayerPosition();
   const getPlayerInPosition = (position: PlayerPosition): LobbyPlayer =>
     players.filter((player) => player.position === position)[0];

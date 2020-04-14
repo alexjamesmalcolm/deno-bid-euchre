@@ -23,21 +23,22 @@ import {
 const getHighestCard = (
   leadingSuit: CardSuit,
   trump: Trump,
-  cards: Card[]
+  cards: Card[],
 ): Card => {
-  const highestValueCardsInTrump = getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
-    leadingSuit,
-    trump
-  );
+  const highestValueCardsInTrump =
+    getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
+      leadingSuit,
+      trump,
+    );
   const highestValueCardsThatWereFound = highestValueCardsInTrump.filter(
-    (card) => cards.some((trickCard) => isSameCard(trickCard, card))
+    (card) => cards.some((trickCard) => isSameCard(trickCard, card)),
   );
   return highestValueCardsThatWereFound[0];
 };
 
 const getPositionOfWinnerOfTrick = (
   trick: FinishedTrick | UpCard[],
-  trump: Trump
+  trump: Trump,
 ): PlayerPosition => {
   const winningCard: Card = getHighestCard(
     trick[0].card.suit,
@@ -45,12 +46,11 @@ const getPositionOfWinnerOfTrick = (
     trick.map(
       (upCard: UpCard): Card => {
         return upCard.card;
-      }
-    )
+      },
+    ),
   );
-  const winner: PlayerPosition = trick.filter((upCard) =>
-    isSameCard(upCard.card, winningCard)
-  )[0].owner;
+  const winner: PlayerPosition =
+    trick.filter((upCard) => isSameCard(upCard.card, winningCard))[0].owner;
   return winner;
 };
 
@@ -66,9 +66,7 @@ const getTricksNeededToMakeBid = (bid: BidChoice): 3 | 4 | 5 | 6 => {
   }
 };
 
-const getPointsReceivedForMakingBid = (
-  bid: BidChoice
-): 3 | 4 | 5 | 6 | 12 | 24 => {
+const getPointsReceivedForMakingBid = (bid: BidChoice) => {
   if (bid === "Partner's Best Card") {
     return 12;
   } else if (bid === "Going Alone") {
@@ -80,7 +78,7 @@ const getPointsReceivedForMakingBid = (
 
 const howManyPointsDoesTheTeamGetForBidding = (
   bid: BidChoice,
-  tricksTakenCount: number
+  tricksTakenCount: number,
 ): number => {
   const tricksNeeded = getTricksNeededToMakeBid(bid);
   const pointsReceivedForMakingBid = getPointsReceivedForMakingBid(bid);
@@ -92,7 +90,7 @@ const howManyPointsDoesTheTeamGetForBidding = (
 const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
   option: Card,
   phase: TrickTakingPhase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): BiddingPhase => {
   const fourShuffledHands = shuffleAndDealFourHands();
   const mapPlayer = (player: Player): Player => {
@@ -123,24 +121,24 @@ const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
         // }
         const winner: PlayerPosition = getPositionOfWinnerOfTrick(
           trick,
-          phase.trump
+          phase.trump,
         );
         return (
           points +
           (team.players.some((player) => player.position === winner) ? 1 : 0)
         );
       },
-      0
+      0,
     );
     // const trickTakenCount: number = allFinishedTricks.filter((trick: FinishedTrick) => {}).length;
     const didBidBelongToThisTeam: boolean = team.players.some(
-      (player) => player.position === phase.winningBid.playerPosition
+      (player) => player.position === phase.winningBid.playerPosition,
     );
     const pointsTaken: number = didBidBelongToThisTeam
       ? howManyPointsDoesTheTeamGetForBidding(
-          phase.winningBid.choice,
-          trickTakenCount
-        )
+        phase.winningBid.choice,
+        trickTakenCount,
+      )
       : trickTakenCount;
     return {
       points: team.points + pointsTaken,
@@ -159,7 +157,7 @@ const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
 export const chooseOptionForTrickTakingPhase = (
   option: Card,
   phase: TrickTakingPhase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): TrickTakingPhase | BiddingPhase | GameOverPhase => {
   const {
     currentTrick,
@@ -177,7 +175,7 @@ export const chooseOptionForTrickTakingPhase = (
     return chooseLastCardInLastTrickThenMoveDealerAndDeal(
       option,
       phase,
-      currentPlayer
+      currentPlayer,
     );
   }
 

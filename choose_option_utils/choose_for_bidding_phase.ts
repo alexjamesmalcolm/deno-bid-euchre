@@ -11,7 +11,7 @@ const getWinningBid = (bids: Bid[]): Bid =>
   bids.reduce((previousValue, currentValue) => {
     const highestBidChoice = getHigherBid(
       previousValue.choice,
-      currentValue.choice
+      currentValue.choice,
     );
     return highestBidChoice === previousValue.choice
       ? previousValue
@@ -21,7 +21,7 @@ const getWinningBid = (bids: Bid[]): Bid =>
 export const chooseOptionForBiddingPhase = (
   option: BidChoice,
   phase: BiddingPhase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): BiddingPhase | TrumpPickingPhase => {
   const bid: Bid = { choice: option, playerPosition: currentPlayer };
   const bids: Bid[] = phase.bids.concat([bid]);

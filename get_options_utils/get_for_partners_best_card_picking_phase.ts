@@ -7,11 +7,11 @@ import { getPositionOfPartner, getPlayerByPosition } from "../utils.ts";
 
 export const getOptionsForPartnersBestCardPickingPhase = (
   phase: PartnersBestCardPickingPhase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): Card[] => {
   const partnerPosition: PlayerPosition = phase.partner;
   const lonelyPlayerPosition: PlayerPosition = getPositionOfPartner(
-    partnerPosition
+    partnerPosition,
   );
   const hasLonelyPlayerAlreadyDiscardedACard =
     getPlayerByPosition(lonelyPlayerPosition, phase).hand.length === 5;

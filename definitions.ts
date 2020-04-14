@@ -101,6 +101,6 @@ export type FourHands = FixedLengthArray<
     FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
     FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
     FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>
+    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
   ]
 >;

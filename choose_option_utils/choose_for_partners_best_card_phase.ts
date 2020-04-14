@@ -17,24 +17,23 @@ import {
 export const chooseOptionForPickingPartnersBestCardPhase = (
   option: Card,
   phase: PartnersBestCardPickingPhase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): TrickTakingPhase | PartnersBestCardPickingPhase => {
   const partnerPosition: PlayerPosition = phase.partner;
   const lonelyPlayerPosition: PlayerPosition = getPositionOfPartner(
-    partnerPosition
+    partnerPosition,
   );
   const hasLonelyPlayerAlreadyDiscardedACard =
     getPlayerByPosition(lonelyPlayerPosition, phase).hand.length === 5;
   const mapPlayer = (player: Player): Player => ({
     ...player,
-    hand:
-      player.position === currentPlayer
-        ? player.hand.filter((card) => !isSameCard(card, option))
-        : player.hand.concat([option]),
+    hand: player.position === currentPlayer
+      ? player.hand.filter((card) => !isSameCard(card, option))
+      : player.hand.concat([option]),
   });
   const mapTeam = (team: Team): Team => {
     const isTeamTheBidWinner = team.players.some(
-      (player) => player.position === phase.partner
+      (player) => player.position === phase.partner,
     );
     if (isTeamTheBidWinner) {
       const result: Team = {

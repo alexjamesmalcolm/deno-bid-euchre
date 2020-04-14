@@ -36,9 +36,7 @@ export const getNextPosition = (position: PlayerPosition): PlayerPosition => {
   }
 };
 
-export const getPositionOfPartner = (
-  position: PlayerPosition
-): PlayerPosition => {
+export const getPositionOfPartner = (position: PlayerPosition) => {
   if (position === "1") {
     return "3";
   } else if (position === "2") {
@@ -52,14 +50,14 @@ export const getPositionOfPartner = (
 
 const isFirstBidGreaterThanSecond = (
   first: BidChoice,
-  second: BidChoice
+  second: BidChoice,
 ): boolean => getHigherBid(first, second) === first;
 
 export const getHigherBids = (bid: BidChoice): BidChoice[] =>
   bidHierarchy.filter(
     (element) =>
       element === "Pass" ||
-      (bid !== element && isFirstBidGreaterThanSecond(element, bid))
+      (bid !== element && isFirstBidGreaterThanSecond(element, bid)),
   );
 
 const getSameColorSuit = (suit: CardSuit): CardSuit => {
@@ -76,7 +74,7 @@ const getSameColorSuit = (suit: CardSuit): CardSuit => {
 
 export const getCardsOfSuitWhenTrumpOrderedByHierarchyDesc = (
   suit: CardSuit,
-  trump: Trump
+  trump: Trump,
 ): Card[] => {
   if (trump === "Low" || trump === "High") {
     const cards: Card[] = [
@@ -218,16 +216,16 @@ const getIndex = (position: PlayerPosition): 0 | 1 | 2 | 3 => {
 
 export const getHandSliceViaPosition = (
   position: PlayerPosition,
-  fourShuffledHands: FourHands
+  fourShuffledHands: FourHands,
 ): FixedLengthArray<[Card, Card, Card, Card, Card, Card]> =>
   fourShuffledHands[getIndex(position)];
 
 export const getPlayerByPosition = (
   position: PlayerPosition,
-  phase: Phase
+  phase: Phase,
 ): Player => {
   const players: Player[] = phase.teams[0].players.concat(
-    phase.teams[1].players
+    phase.teams[1].players,
   );
   const foundPlayer = players.find((player) => player.position === position);
   if (foundPlayer) return foundPlayer;

@@ -3,7 +3,7 @@ import { getHigherBid, getHigherBids } from "../utils.ts";
 
 export const getOptionsForBiddingPhase = (
   phase: BiddingPhase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): BidChoice[] => {
   if (phase.bidPosition !== currentPlayer) {
     return [];
@@ -18,7 +18,7 @@ export const getOptionsForBiddingPhase = (
     );
   const isPlayerDealer = currentPlayer === phase.dealer;
   const hasEveryoneElsePassed = phase.bids.every(
-    (bid) => bid.choice === "Pass"
+    (bid) => bid.choice === "Pass",
   );
   const isDealerFucked = isPlayerDealer && hasEveryoneElsePassed;
   const higherBids = getHigherBids(highestBid);

@@ -939,12 +939,12 @@ Deno.test(
       assertEquals(
         allPlayersHaveSixCards,
         true,
-        "All players should've had six cards but they don't for some reason."
+        "All players should've had six cards but they don't for some reason.",
       );
     } else {
       fail("Phase should have been Bidding but wasn't");
     }
-  }
+  },
 );
 
 Deno.test(
@@ -1027,7 +1027,7 @@ Deno.test(
     } else {
       fail("Phase should have been Bidding but wasn't");
     }
-  }
+  },
 );
 
 Deno.test(function shouldRemoveAllCardsFromTrickWhenLastCardIsPlayed() {
@@ -1119,7 +1119,7 @@ Deno.test(function shouldRemoveAllCardsFromTrickWhenLastCardIsPlayed() {
   assertEquals(
     options.length > 0,
     true,
-    "Was not able to find any options for this phase"
+    "Was not able to find any options for this phase",
   );
   const nextPhase = chooseOption(option, phase, currentPlayer);
   if (nextPhase.name !== "Game Over") {
@@ -1222,14 +1222,14 @@ Deno.test(function shouldHavePersonWhoWonLastTrickLeadTheNext() {
   assertEquals(
     options.length > 0,
     true,
-    "Was not able to find any options for this phase"
+    "Was not able to find any options for this phase",
   );
   const nextPhase = chooseOption(option, phase, currentPlayer);
   if (nextPhase.name === "Trick-Taking") {
     assertEquals(
       nextPhase.cardPosition,
       currentPlayer,
-      `Since Noodle ${currentPlayer} won the last trick he should be the first player in the next trick but instead it was ${nextPhase.cardPosition}`
+      `Since Noodle ${currentPlayer} won the last trick he should be the first player in the next trick but instead it was ${nextPhase.cardPosition}`,
     );
   } else {
     fail("The phase was supposed to be Trick-Taking but it isn't.");
@@ -1686,11 +1686,11 @@ Deno.test(
     assertEquals(
       options.length,
       1,
-      `The number of options should be 1 but instead it was ${options.length}`
+      `The number of options should be 1 but instead it was ${options.length}`,
     );
     const expectedOption: Card = { rank: "Ace", suit: "Diamonds" };
     assertArrayContains(options, [expectedOption]);
-  }
+  },
 );
 
 Deno.test(
@@ -1770,7 +1770,7 @@ Deno.test(
     assertEquals(options.length, 6);
     const nextPhase = chooseOption(options[0], phase, currentPlayer);
     assertNotEquals(nextPhase, phase);
-  }
+  },
 );
 
 Deno.test(function shouldBeAbleToSelectAnyCardWhenPickingPartnersBestCard() {
@@ -1854,7 +1854,7 @@ Deno.test(function shouldBeAbleToSelectAnyCardWhenPickingPartnersBestCard() {
     assertEquals(
       nextPhase.name === expectedPhaseName,
       true,
-      `Expected ${expectedPhaseName} but instead got ${nextPhase.name}`
+      `Expected ${expectedPhaseName} but instead got ${nextPhase.name}`,
     );
   });
 });
@@ -2026,7 +2026,7 @@ Deno.test(function shouldSkipThePersonWhoIsSittingOut() {
   const nextPhase = chooseOption(
     getOptions(phase, currentPlayer)[0],
     phase,
-    currentPlayer
+    currentPlayer,
   );
   assertNotEquals(phase, nextPhase);
 });

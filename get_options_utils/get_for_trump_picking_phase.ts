@@ -2,7 +2,7 @@ import { TrumpPickingPhase, PlayerPosition, Trump } from "../definitions.ts";
 
 export const getOptionsForTrumpPickingPhase = (
   phase: TrumpPickingPhase,
-  currentPlayer: PlayerPosition
+  currentPlayer: PlayerPosition,
 ): Trump[] => {
   if (phase.winningBid.playerPosition === currentPlayer) {
     if (phase.winningBid.choice === "3") {
