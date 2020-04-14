@@ -216,7 +216,10 @@ export const chooseOptionForTrickTakingPhase = (
   } else {
     const nextPhase: TrickTakingPhase = {
       name: "Trick-Taking",
-      cardPosition: getNextPosition(cardPosition),
+      cardPosition:
+        playerSittingOut && getNextPosition(cardPosition) === playerSittingOut
+          ? getNextPosition(getNextPosition(cardPosition))
+          : getNextPosition(cardPosition),
       currentTrick: [...currentTrick, { owner: currentPlayer, card: option }],
       dealer,
       finishedTricks,
