@@ -93,21 +93,13 @@ const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
   currentPlayer: PlayerPosition,
 ): BiddingPhase => {
   const fourShuffledHands = shuffleAndDealFourHands();
-  const mapPlayer = (player: Player): Player => {
-    return {
-      ...player,
-      hand: [...getHandSliceViaPosition(player.position, fourShuffledHands)],
-    };
-  };
-  const firstCard: UpCard = phase.currentTrick[0];
-  const secondCard: UpCard = phase.currentTrick[1];
-  const thirdCard: UpCard = phase.currentTrick[2];
-  const fourthCard: UpCard = { card: option, owner: currentPlayer };
-  const lastTrick: FinishedTrick = [
-    firstCard,
-    secondCard,
-    thirdCard,
-    fourthCard,
+  const mapPlayer = (player: Player): Player => ({
+    ...player,
+    hand: [...getHandSliceViaPosition(player.position, fourShuffledHands)],
+  });
+  const lastTrick = [
+    ...phase.currentTrick,
+    { card: option, owner: currentPlayer },
   ];
   const allFinishedTricks: FinishedTrick[] = phase.finishedTricks.concat([
     lastTrick,
@@ -115,10 +107,6 @@ const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
   const mapTeams = (team: Team): Team => {
     const trickTakenCount: number = allFinishedTricks.reduce(
       (points: number, trick) => {
-        // if (trick.length !== 4) {
-        //   jsonPrint({ trick });
-        //   throw `Trick's length should be 4 but it's ${trick.length}`;
-        // }
         const winner: PlayerPosition = getPositionOfWinnerOfTrick(
           trick,
           phase.trump,
@@ -170,7 +158,8 @@ export const chooseOptionForTrickTakingPhase = (
     cardPosition,
   } = phase;
   const isLastTrick: boolean = finishedTricks.length === 5;
-  const isLastCardInTrick: boolean = currentTrick.length === 3;
+  const isLastCardInTrick: boolean = currentTrick.length === 3 ||
+    (!!playerSittingOut && currentTrick.length === 2);
   if (isLastTrick && isLastCardInTrick) {
     return chooseLastCardInLastTrickThenMoveDealerAndDeal(
       option,
@@ -193,9 +182,7 @@ export const chooseOptionForTrickTakingPhase = (
   });
   if (isLastCardInTrick) {
     const trick: FinishedTrick = [
-      currentTrick[0],
-      currentTrick[1],
-      currentTrick[2],
+      ...currentTrick,
       { owner: currentPlayer, card: option },
     ];
     const trickWinner = getPositionOfWinnerOfTrick(trick, trump);

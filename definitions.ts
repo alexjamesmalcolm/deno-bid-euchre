@@ -70,7 +70,7 @@ export interface UpCard {
 }
 
 type Trick = UpCard[];
-export type FinishedTrick = FixedLengthArray<[UpCard, UpCard, UpCard, UpCard]>;
+export type FinishedTrick = UpCard[];
 
 export interface TrickTakingPhase extends BasePhase {
   name: "Trick-Taking";
