@@ -135,9 +135,9 @@ const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
   };
   return {
     name: "Bidding",
-    bidPosition: "1",
+    bidPosition: getNextPosition(getNextPosition(phase.dealer)),
     bids: [],
-    dealer: "1",
+    dealer: getNextPosition(phase.dealer),
     teams: [mapTeams(phase.teams[0]), mapTeams(phase.teams[1])],
   };
 };
