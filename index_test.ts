@@ -1859,6 +1859,91 @@ Deno.test(function shouldBeAbleToSelectAnyCardWhenPickingPartnersBestCard() {
   });
 });
 
+Deno.test(function shouldNotBeAbleToDoAnythingIfPartnerIsGoingAlone() {
+  const phase: TrickTakingPhase = {
+    name: "Trick-Taking",
+    cardPosition: "4",
+    currentTrick: [
+      {
+        owner: "2",
+        card: { rank: "Jack", suit: "Clubs" },
+      },
+      {
+        owner: "3",
+        card: { rank: "Ace", suit: "Clubs" },
+      },
+    ],
+    dealer: "1",
+    finishedTricks: [],
+    trump: "Clubs",
+    winningBid: {
+      choice: "Going Alone",
+      playerPosition: "2",
+    },
+    playerSittingOut: "4",
+    teams: [
+      {
+        players: [
+          {
+            name: "Julia",
+            position: "1",
+            hand: [
+              { rank: "10", suit: "Hearts" },
+              { rank: "Ace", suit: "Hearts" },
+              { rank: "Queen", suit: "Spades" },
+              { rank: "9", suit: "Hearts" },
+              { rank: "Jack", suit: "Spades" },
+              { rank: "Jack", suit: "Diamonds" },
+            ],
+          },
+          {
+            name: "Larry",
+            position: "3",
+            hand: [
+              { rank: "Ace", suit: "Spades" },
+              { rank: "Queen", suit: "Diamonds" },
+              { rank: "10", suit: "Diamonds" },
+              { rank: "King", suit: "Diamonds" },
+              { rank: "Queen", suit: "Clubs" },
+            ],
+          },
+        ],
+        points: 0,
+      },
+      {
+        players: [
+          {
+            name: "Serena",
+            position: "2",
+            hand: [
+              { rank: "9", suit: "Spades" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "King", suit: "Hearts" },
+              { rank: "9", suit: "Clubs" },
+              { rank: "King", suit: "Spades" },
+            ],
+          },
+          {
+            name: "Noodle",
+            position: "4",
+            hand: [
+              { rank: "King", suit: "Clubs" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "Jack", suit: "Hearts" },
+              { rank: "Ace", suit: "Diamonds" },
+              { rank: "9", suit: "Diamonds" },
+              { rank: "10", suit: "Spades" },
+            ],
+          },
+        ],
+        points: 0,
+      },
+    ],
+  };
+  const [isPhaseLegal] = determineIfPhaseIsLegal(phase);
+  assertEquals(isPhaseLegal, false);
+});
+
 /*
 Test winning a trick
 Test placing a card in a trick

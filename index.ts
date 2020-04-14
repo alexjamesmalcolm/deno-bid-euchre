@@ -39,6 +39,13 @@ const isTrump = (a: any): a is Trump =>
   ["Clubs", "Diamonds", "Hearts", "High", "Low", "Spades"].includes(a);
 
 export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
+  if (
+    phase.name === "Trick-Taking" &&
+    phase.playerSittingOut &&
+    phase.playerSittingOut === phase.cardPosition
+  ) {
+    return [false, "The player sitting out shouldn't be able to play"];
+  }
   if (phase.teams.length !== 2) {
     return [false, "Team lengths were not two"];
   }
