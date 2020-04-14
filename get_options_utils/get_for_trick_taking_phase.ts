@@ -3,6 +3,7 @@ import {
   getCardsOfSuitWhenTrumpOrderedByHierarchyDesc,
   isSameCard,
 } from "../utils.ts";
+import { High, Low } from "../constants.ts";
 
 export const getOptionsForTrickTakingPhase = (
   phase: TrickTakingPhase,
@@ -13,9 +14,17 @@ export const getOptionsForTrickTakingPhase = (
   const player = players.find((player) => player.position === currentPlayer);
   const handOfCurrentPlayer: Card[] = player ? player.hand : [];
   if (phase.currentTrick.length > 0) {
+    const leadingCard = phase.currentTrick[0].card;
     const cardsOfSameSuitAsLead: Card[] =
       getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
-        phase.currentTrick[0].card.suit,
+        phase.trump !== High &&
+        phase.trump !== Low &&
+        getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
+          phase.trump,
+          phase.trump,
+        ).some((card) => isSameCard(leadingCard, card))
+          ? phase.trump
+          : leadingCard.suit,
         phase.trump,
       );
     const doesPlayerHaveCardOfSameLeadingSuit = cardsOfSameSuitAsLead.some(

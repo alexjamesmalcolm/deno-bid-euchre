@@ -2124,6 +2124,85 @@ Deno.test(function shouldHaveTricksFinishAtThreeWhenAPlayerIsSittingOut() {
   }
 });
 
+Deno.test(
+  function shouldHaveLarryOnlyBeAbleToSelectSpadesSinceTheLeadingCardIsTheLeftBowerSpades() {
+    const currentPlayer: PlayerPosition = "3";
+    const phase: TrickTakingPhase = {
+      name: "Trick-Taking",
+      cardPosition: "3",
+      currentTrick: [{ owner: "2", card: { rank: "Jack", suit: "Clubs" } }],
+      dealer: "1",
+      finishedTricks: [],
+      trump: "Spades",
+      winningBid: { choice: "3", playerPosition: "1" },
+      teams: [
+        {
+          players: [
+            {
+              name: "Julia",
+              position: "1",
+              hand: [
+                { rank: "King", suit: "Diamonds" },
+                { rank: "Queen", suit: "Clubs" },
+                { rank: "10", suit: "Hearts" },
+                { rank: "9", suit: "Hearts" },
+                { rank: "Ace", suit: "Clubs" },
+                { rank: "Jack", suit: "Hearts" },
+              ],
+            },
+            {
+              name: "Larry",
+              position: "3",
+              hand: [
+                { rank: "Ace", suit: "Diamonds" },
+                { rank: "10", suit: "Clubs" },
+                { rank: "Queen", suit: "Hearts" },
+                { rank: "King", suit: "Clubs" },
+                { rank: "Jack", suit: "Spades" },
+                { rank: "Queen", suit: "Spades" },
+              ],
+            },
+          ],
+          points: 4,
+        },
+        {
+          players: [
+            {
+              name: "Serena",
+              position: "2",
+              hand: [
+                { rank: "Ace", suit: "Hearts" },
+                { rank: "10", suit: "Diamonds" },
+                { rank: "Jack", suit: "Diamonds" },
+                { rank: "Ace", suit: "Spades" },
+                { rank: "Queen", suit: "Diamonds" },
+              ],
+            },
+            {
+              name: "Noodle",
+              position: "4",
+              hand: [
+                { rank: "9", suit: "Spades" },
+                { rank: "9", suit: "Diamonds" },
+                { rank: "9", suit: "Clubs" },
+                { rank: "10", suit: "Spades" },
+                { rank: "King", suit: "Spades" },
+                { rank: "King", suit: "Hearts" },
+              ],
+            },
+          ],
+          points: 2,
+        },
+      ],
+    };
+    const options: Option[] = getOptions(phase, currentPlayer);
+    const cards: Card[] = options as Card[];
+    cards.forEach((card) => {
+      assertEquals(card.suit, "Spades");
+    });
+  },
+);
+
 /*
 Test winning a trick
 Test placing a card in a trick
