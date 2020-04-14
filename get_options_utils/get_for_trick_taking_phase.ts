@@ -3,7 +3,6 @@ import {
   getCardsOfSuitWhenTrumpOrderedByHierarchyDesc,
   isSameCard,
 } from "../utils.ts";
-import { High, Low } from "../constants.ts";
 
 export const getOptionsForTrickTakingPhase = (
   phase: TrickTakingPhase,
@@ -17,8 +16,8 @@ export const getOptionsForTrickTakingPhase = (
     const leadingCard = phase.currentTrick[0].card;
     const cardsOfSameSuitAsLead: Card[] =
       getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
-        phase.trump !== High &&
-        phase.trump !== Low &&
+        phase.trump !== "High" &&
+        phase.trump !== "Low" &&
         getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
           phase.trump,
           phase.trump,
