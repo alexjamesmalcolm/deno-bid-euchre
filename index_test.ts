@@ -2282,7 +2282,6 @@ Deno.test(function shouldHaveJuliaBeTheNextLead() {
   };
   const options = getOptions(phase, currentPlayer);
   assertArrayContains(options, [chosenOption]);
-  console.log(options, chosenOption);
   const nextPhase = chooseOption(chosenOption, phase, currentPlayer);
   if (nextPhase.name === "Trick-Taking") {
     const nextOptions = getOptions(nextPhase, currentPlayer);

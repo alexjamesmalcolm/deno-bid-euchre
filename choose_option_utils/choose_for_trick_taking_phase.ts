@@ -43,7 +43,6 @@ const getPositionOfWinnerOfTrick = (
       },
     ),
   );
-  console.log("winningCard", winningCard);
   const winner: PlayerPosition =
     trick.filter((upCard) => isSameCard(upCard.card, winningCard))[0].owner;
   return winner;
