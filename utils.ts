@@ -72,6 +72,37 @@ const getSameColorSuit = (suit: CardSuit): CardSuit => {
   }
 };
 
+export const cardsContainCard = (cards: Card[], card: Card) =>
+  cards.some((c) => isSameCard(card, c));
+
+export const getAllCardsOrderedByHierarchyDesc = (
+  leadingCardSuit: CardSuit,
+  trump: Trump,
+): Card[] => {
+  if (trump === "Low" || trump === "High") {
+    const relevantCards: Card[] = getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
+      leadingCardSuit,
+      trump,
+    );
+    const irrelevantCards: Card[] = getAllCards().filter((card) =>
+      !cardsContainCard(relevantCards, card)
+    );
+    return relevantCards.concat(irrelevantCards);
+  }
+  const trumpCards: Card[] = getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
+    trump,
+    trump,
+  );
+  const leadingSuitCards: Card[] =
+    getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(leadingCardSuit, trump);
+  const irrelevantCards: Card[] = getAllCards().filter((card) => {
+    if (cardsContainCard(trumpCards, card)) return false;
+    if (cardsContainCard(leadingSuitCards, card)) return false;
+    return true;
+  });
+  return trumpCards.concat(leadingSuitCards).concat(irrelevantCards);
+};
+
 export const getCardsOfSuitWhenTrumpOrderedByHierarchyDesc = (
   suit: CardSuit,
   trump: Trump,

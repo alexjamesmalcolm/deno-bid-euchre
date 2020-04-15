@@ -155,7 +155,10 @@ export const isLegalOption = (
   option: Option,
   phase: Phase,
   currentPlayer: PlayerPosition,
-): boolean => getOptions(phase, currentPlayer).includes(option);
+): boolean =>
+  getOptions(phase, currentPlayer).some((o) =>
+    JSON.stringify(o) === JSON.stringify(option)
+  );
 
 export const chooseOption = (
   option: Option,
@@ -166,6 +169,12 @@ export const chooseOption = (
     !isLegalOption(option, phase, currentPlayer) ||
     !determineIfPhaseIsLegal(phase)
   ) {
+    if (!isLegalOption(option, phase, currentPlayer)) {
+      console.warn("Option is illegal");
+    } else {
+      const [, errorMessage] = determineIfPhaseIsLegal(phase);
+      console.warn(errorMessage);
+    }
     return phase;
   }
 

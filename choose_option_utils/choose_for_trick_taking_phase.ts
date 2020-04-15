@@ -14,27 +14,21 @@ import {
 } from "../definitions.ts";
 import {
   getNextPosition,
-  getCardsOfSuitWhenTrumpOrderedByHierarchyDesc,
   isSameCard,
   shuffleAndDealFourHands,
   getHandSliceViaPosition,
+  getAllCardsOrderedByHierarchyDesc,
+  cardsContainCard,
 } from "../utils.ts";
 
 const getHighestCard = (
   leadingSuit: CardSuit,
   trump: Trump,
   cards: Card[],
-): Card => {
-  const highestValueCardsInTrump =
-    getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
-      leadingSuit,
-      trump,
-    );
-  const highestValueCardsThatWereFound = highestValueCardsInTrump.filter(
-    (card) => cards.some((trickCard) => isSameCard(trickCard, card)),
-  );
-  return highestValueCardsThatWereFound[0];
-};
+): Card =>
+  getAllCardsOrderedByHierarchyDesc(leadingSuit, trump).filter((card) =>
+    cardsContainCard(cards, card)
+  )[0];
 
 const getPositionOfWinnerOfTrick = (
   trick: FinishedTrick | UpCard[],
@@ -49,6 +43,7 @@ const getPositionOfWinnerOfTrick = (
       },
     ),
   );
+  console.log("winningCard", winningCard);
   const winner: PlayerPosition =
     trick.filter((upCard) => isSameCard(upCard.card, winningCard))[0].owner;
   return winner;

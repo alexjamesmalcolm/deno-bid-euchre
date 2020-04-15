@@ -22,6 +22,7 @@ import {
   Card,
   Trump,
   PartnersBestCardPickingPhase,
+  Player,
 } from "./definitions.ts";
 import FixedLengthArray from "./FixedLengthArray.ts";
 
@@ -933,8 +934,8 @@ Deno.test(
     const options = getOptions(phase, "1");
     const nextPhase = chooseOption(options[0], phase, currentPlayer);
     if (nextPhase.name === "Bidding") {
-      const allPlayersHaveSixCards = nextPhase.teams.every((team) =>
-        team.players.every((player) => player.hand.length === 6)
+      const allPlayersHaveSixCards = nextPhase.teams.every((team: Team) =>
+        team.players.every((player: Player) => player.hand.length === 6)
       );
       assertEquals(
         allPlayersHaveSixCards,
@@ -1849,7 +1850,7 @@ Deno.test(function shouldBeAbleToSelectAnyCardWhenPickingPartnersBestCard() {
   const options = getOptions(phase, currentPlayer);
   assertArrayContains(options, hand);
   const expectedPhaseName = "Trick-Taking";
-  options.forEach((option) => {
+  options.forEach((option: Option) => {
     const nextPhase = chooseOption(option, phase, currentPlayer);
     assertEquals(
       nextPhase.name === expectedPhaseName,
@@ -2202,6 +2203,100 @@ Deno.test(
     });
   },
 );
+
+Deno.test(function shouldHaveJuliaBeTheNextLead() {
+  const currentPlayer: PlayerPosition = "1";
+  const chosenOption: Option = { rank: "Queen", suit: "Hearts" };
+  const phase: TrickTakingPhase = {
+    name: "Trick-Taking",
+    cardPosition: "1",
+    currentTrick: [
+      { owner: "2", card: { rank: "Queen", suit: "Diamonds" } },
+      { owner: "3", card: { rank: "9", suit: "Spades" } },
+      { owner: "4", card: { rank: "9", suit: "Clubs" } },
+    ],
+    dealer: currentPlayer,
+    finishedTricks: [
+      [
+        { owner: "2", card: { rank: "Ace", suit: "Diamonds" } },
+        { owner: "3", card: { rank: "9", suit: "Diamonds" } },
+        { owner: "4", card: { rank: "King", suit: "Diamonds" } },
+        { owner: "1", card: { rank: "10", suit: "Diamonds" } },
+      ],
+    ],
+    trump: "Hearts",
+    winningBid: { choice: "3", playerPosition: "3" },
+    teams: [
+      {
+        players: [
+          {
+            name: "Julia",
+            position: "1",
+            hand: [
+              { rank: "King", suit: "Spades" },
+              { rank: "Jack", suit: "Diamonds" },
+              { rank: "Ace", suit: "Clubs" },
+              { rank: "Queen", suit: "Hearts" },
+              { rank: "Jack", suit: "Clubs" },
+            ],
+          },
+          {
+            name: "Larry",
+            position: "3",
+            hand: [
+              { rank: "Jack", suit: "Hearts" },
+              { rank: "10", suit: "Clubs" },
+              { rank: "Ace", suit: "Hearts" },
+              { rank: "10", suit: "Hearts" },
+            ],
+          },
+        ],
+        points: 0,
+      },
+      {
+        players: [
+          {
+            name: "Serena",
+            position: "2",
+            hand: [
+              { rank: "King", suit: "Hearts" },
+              { rank: "King", suit: "Clubs" },
+              { rank: "Jack", suit: "Spades" },
+              { rank: "Queen", suit: "Spades" },
+            ],
+          },
+          {
+            name: "Noodle",
+            position: "4",
+            hand: [
+              { rank: "Queen", suit: "Clubs" },
+              { rank: "9", suit: "Hearts" },
+              { rank: "10", suit: "Spades" },
+              { rank: "Ace", suit: "Spades" },
+            ],
+          },
+        ],
+        points: 0,
+      },
+    ],
+  };
+  const options = getOptions(phase, currentPlayer);
+  assertArrayContains(options, [chosenOption]);
+  console.log(options, chosenOption);
+  const nextPhase = chooseOption(chosenOption, phase, currentPlayer);
+  if (nextPhase.name === "Trick-Taking") {
+    const nextOptions = getOptions(nextPhase, currentPlayer);
+    assertEquals(nextOptions.length > 0, true);
+    assertEquals(nextPhase.cardPosition, currentPlayer);
+    assertEquals(
+      nextPhase.currentTrick.length,
+      0,
+      `Expected the current trick to be over but we found ${nextPhase.currentTrick.length} in the current trick`,
+    );
+  } else {
+    fail("Expected Trick-Taking phase");
+  }
+});
 
 /*
 Test winning a trick
