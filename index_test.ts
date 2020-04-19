@@ -24,7 +24,6 @@ import {
   PartnersBestCardPickingPhase,
   Player,
 } from "./definitions.ts";
-import FixedLengthArray from "./FixedLengthArray.ts";
 
 Deno.test(function shouldBeIllegalToHaveThreeTeams() {
   const phase: BiddingPhase = {
@@ -473,7 +472,7 @@ Deno.test(function shouldHaveDealerBeAbleToSelectAnyChoiceExceptPass() {
 Deno.test(function shouldBeAbleToPickClubsAsTrump() {
   const bidWinner: PlayerPosition = "2";
   const dealerPosition: PlayerPosition = "1";
-  const teams: FixedLengthArray<[Team, Team]> = [
+  const teams: [Team, Team] = [
     {
       players: [
         {

@@ -18,7 +18,6 @@ import { getOptionsForBiddingPhase } from "./get_options_utils/get_for_bidding_p
 import { getOptionsForTrumpPickingPhase } from "./get_options_utils/get_for_trump_picking_phase.ts";
 import { getOptionsForTrickTakingPhase } from "./get_options_utils/get_for_trick_taking_phase.ts";
 import { getOptionsForPartnersBestCardPickingPhase } from "./get_options_utils/get_for_partners_best_card_picking_phase.ts";
-import FixedLengthArray from "./FixedLengthArray.ts";
 import {
   randomPlayerPosition,
   getNextPosition,
@@ -156,8 +155,8 @@ export const isLegalOption = (
   phase: Phase,
   currentPlayer: PlayerPosition,
 ): boolean =>
-  getOptions(phase, currentPlayer).some((o) =>
-    JSON.stringify(o) === JSON.stringify(option)
+  getOptions(phase, currentPlayer).some(
+    (o) => JSON.stringify(o) === JSON.stringify(option),
   );
 
 export const chooseOption = (
@@ -202,9 +201,12 @@ export const chooseOption = (
   return phase;
 };
 
-export const startGame = (players: FixedLengthArray<
-  [LobbyPlayer, LobbyPlayer, LobbyPlayer, LobbyPlayer]
->) => {
+export const startGame = (players: [
+  LobbyPlayer,
+  LobbyPlayer,
+  LobbyPlayer,
+  LobbyPlayer,
+]) => {
   const dealer: PlayerPosition = randomPlayerPosition();
   const getPlayerInPosition = (position: PlayerPosition): LobbyPlayer =>
     players.filter((player) => player.position === position)[0];

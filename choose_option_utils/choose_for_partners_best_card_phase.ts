@@ -6,7 +6,6 @@ import {
   Team,
   Player,
 } from "../definitions.ts";
-import FixedLengthArray from "../FixedLengthArray.ts";
 import {
   getNextPosition,
   getPositionOfPartner,

@@ -8,7 +8,6 @@ import {
   Phase,
   Player,
 } from "./definitions.ts";
-import FixedLengthArray from "./FixedLengthArray.ts";
 import shuffle from "./shuffle.ts";
 
 const bidHierarchy: BidChoice[] = [
@@ -84,8 +83,8 @@ export const getAllCardsOrderedByHierarchyDesc = (
       leadingCardSuit,
       trump,
     );
-    const irrelevantCards: Card[] = getAllCards().filter((card) =>
-      !cardsContainCard(relevantCards, card)
+    const irrelevantCards: Card[] = getAllCards().filter(
+      (card) => !cardsContainCard(relevantCards, card),
     );
     return relevantCards.concat(irrelevantCards);
   }
@@ -94,7 +93,10 @@ export const getAllCardsOrderedByHierarchyDesc = (
     trump,
   );
   const leadingSuitCards: Card[] =
-    getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(leadingCardSuit, trump);
+    getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
+      leadingCardSuit,
+      trump,
+    );
   const irrelevantCards: Card[] = getAllCards().filter((card) => {
     if (cardsContainCard(trumpCards, card)) return false;
     if (cardsContainCard(leadingSuitCards, card)) return false;
@@ -248,7 +250,7 @@ const getIndex = (position: PlayerPosition): 0 | 1 | 2 | 3 => {
 export const getHandSliceViaPosition = (
   position: PlayerPosition,
   fourShuffledHands: FourHands,
-): FixedLengthArray<[Card, Card, Card, Card, Card, Card]> =>
+): [Card, Card, Card, Card, Card, Card] =>
   fourShuffledHands[getIndex(position)];
 
 export const getPlayerByPosition = (

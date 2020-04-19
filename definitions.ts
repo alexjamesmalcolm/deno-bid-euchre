@@ -1,5 +1,3 @@
-import FixedLengthArray from "./FixedLengthArray.ts";
-
 type CardRank = "9" | "10" | "Jack" | "Queen" | "King" | "Ace";
 export type CardSuit = "Clubs" | "Diamonds" | "Hearts" | "Spades";
 
@@ -20,13 +18,13 @@ export interface Player extends LobbyPlayer {
 }
 
 export interface Team {
-  players: FixedLengthArray<[Player, Player]>;
+  players: [Player, Player];
   points: number;
 }
 
 interface BasePhase {
   name: string;
-  teams: FixedLengthArray<[Team, Team]>;
+  teams: [Team, Team];
   dealer: PlayerPosition;
 }
 
@@ -96,11 +94,5 @@ export type Phase =
 
 export type Option = BidChoice | Trump | Card;
 
-export type FourHands = FixedLengthArray<
-  [
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-    FixedLengthArray<[Card, Card, Card, Card, Card, Card]>,
-  ]
->;
+type FullHand = [Card, Card, Card, Card, Card, Card];
+export type FourHands = [FullHand, FullHand, FullHand, FullHand];
