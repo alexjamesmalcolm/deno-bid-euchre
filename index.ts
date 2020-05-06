@@ -70,7 +70,7 @@ export const determineIfPhaseIsLegal = (phase: Phase): [boolean, string] => {
       ? phase.finishedTricks.every(
         (trick) =>
           [...new Set(trick.map((upCard) => upCard.owner))].length ===
-          trick.length,
+            trick.length,
       ) &&
         [...new Set(phase.currentTrick.map((upCard) => upCard.owner))]
           .length === phase.currentTrick.length
