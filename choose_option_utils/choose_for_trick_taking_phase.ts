@@ -81,11 +81,14 @@ const howManyPointsDoesTheTeamGetForBidding = (
     : Math.max(tricksTakenCount, pointsReceivedForMakingBid);
 };
 
+const isGameOver = (phase: BiddingPhase): boolean =>
+  phase.teams.some((team) => team.points >= 40);
+
 const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
   option: Card,
   phase: TrickTakingPhase,
   currentPlayer: PlayerPosition,
-): BiddingPhase => {
+): BiddingPhase | GameOverPhase => {
   const fourShuffledHands = shuffleAndDealFourHands();
   const mapPlayer = (player: Player): Player => ({
     ...player,
@@ -127,13 +130,24 @@ const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
       players: [mapPlayer(team.players[0]), mapPlayer(team.players[1])],
     };
   };
-  return {
+  const biddingPhase: BiddingPhase = {
     name: "Bidding",
     bidPosition: getNextPosition(getNextPosition(phase.dealer)),
     bids: [],
     dealer: getNextPosition(phase.dealer),
     teams: [mapTeams(phase.teams[0]), mapTeams(phase.teams[1])],
   };
+  const winners = biddingPhase.teams.find((team) => team.points >= 40);
+  const losers = biddingPhase.teams.find((team) => team.points < 40);
+  if (winners && losers) {
+    const gameOver: GameOverPhase = {
+      name: "Game Over",
+      winners,
+      losers,
+    };
+    return gameOver;
+  }
+  return biddingPhase;
 };
 
 export const chooseOptionForTrickTakingPhase = (
