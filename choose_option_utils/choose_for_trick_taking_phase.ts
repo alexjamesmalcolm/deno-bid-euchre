@@ -81,9 +81,6 @@ const howManyPointsDoesTheTeamGetForBidding = (
     : Math.max(tricksTakenCount, pointsReceivedForMakingBid);
 };
 
-const isGameOver = (phase: BiddingPhase): boolean =>
-  phase.teams.some((team) => team.points >= 40);
-
 const chooseLastCardInLastTrickThenMoveDealerAndDeal = (
   option: Card,
   phase: TrickTakingPhase,
