@@ -36,6 +36,9 @@ export const chooseOptionForPickingTrumpPhase = (
     };
     if (phase.winningBid.choice === "Going Alone") {
       nextPhase.playerSittingOut = partner;
+      if (nextPhase.cardPosition === partner) {
+        nextPhase.cardPosition = getNextPosition(partner);
+      }
     }
     return nextPhase;
   }

@@ -2417,6 +2417,87 @@ Deno.test({
   },
 });
 
+Deno.test({
+  name: "Serena should be able to pick Spades for Trump when going alone",
+  fn: () => {
+    const phase: TrumpPickingPhase = {
+      "name": "Picking Trump",
+      "dealer": "4",
+      "teams": [
+        {
+          "points": 30,
+          "players": [
+            {
+              "name": "Alex Malcolm",
+              "position": "1",
+              "hand": [
+                { "rank": "King", "suit": "Hearts" },
+                { "rank": "Jack", "suit": "Hearts" },
+                { "rank": "9", "suit": "Diamonds" },
+                { "rank": "Ace", "suit": "Clubs" },
+                { "rank": "Queen", "suit": "Clubs" },
+                { "rank": "King", "suit": "Clubs" },
+              ],
+            },
+            {
+              "name": "Serena Howard",
+              "position": "3",
+              "hand": [
+                { "rank": "Ace", "suit": "Diamonds" },
+                { "rank": "Jack", "suit": "Clubs" },
+                { "rank": "Jack", "suit": "Spades" },
+                { "rank": "Ace", "suit": "Hearts" },
+                { "rank": "10", "suit": "Spades" },
+                { "rank": "Ace", "suit": "Spades" },
+              ],
+            },
+          ],
+        },
+        {
+          "points": 16,
+          "players": [
+            {
+              "name": "Larry Mitchell",
+              "position": "2",
+              "hand": [
+                { "rank": "Queen", "suit": "Spades" },
+                { "rank": "10", "suit": "Hearts" },
+                { "rank": "9", "suit": "Clubs" },
+                { "rank": "Jack", "suit": "Diamonds" },
+                { "rank": "King", "suit": "Spades" },
+                { "rank": "Queen", "suit": "Hearts" },
+              ],
+            },
+            {
+              "name": "Julia Denman",
+              "position": "4",
+              "hand": [
+                { "rank": "9", "suit": "Hearts" },
+                { "rank": "Queen", "suit": "Diamonds" },
+                { "rank": "King", "suit": "Diamonds" },
+                { "rank": "10", "suit": "Clubs" },
+                { "rank": "10", "suit": "Diamonds" },
+                { "rank": "9", "suit": "Spades" },
+              ],
+            },
+          ],
+        },
+      ],
+      "winningBid": { "choice": "Going Alone", "playerPosition": "3" },
+    };
+    const currentPlayer: PlayerPosition = "3";
+    const options = getOptions(phase, currentPlayer);
+    assertEquals(options.length > 0, true);
+    const option = "Spades";
+    const nextPhase = chooseOption(option, phase, currentPlayer);
+    assertNotEquals(
+      nextPhase.name,
+      phase.name,
+      `Expected something other than ${phase.name} but got ${nextPhase.name} instead.`,
+    );
+  },
+});
+
 /*
 Test winning a trick
 Test placing a card in a trick
