@@ -45,6 +45,10 @@ export const chooseOptionForPickingPartnersBestCardPhase = (
     }
   };
   if (hasLonelyPlayerAlreadyDiscardedACard) {
+    const cardPosition: PlayerPosition =
+      getNextPosition(phase.dealer) === phase.partner
+        ? getNextPosition(phase.partner)
+        : getNextPosition(phase.dealer);
     return {
       name: "Trick-Taking",
       playerSittingOut: phase.partner,
@@ -54,7 +58,7 @@ export const chooseOptionForPickingPartnersBestCardPhase = (
       trump: phase.trump,
       currentTrick: [],
       finishedTricks: [],
-      cardPosition: getNextPosition(phase.dealer),
+      cardPosition,
     };
   } else {
     return {

@@ -2498,6 +2498,90 @@ Deno.test({
   },
 });
 
+Deno.test({
+  name: "Julia should be able to pick Queen of Hearts",
+  fn: () => {
+    const phase: PartnersBestCardPickingPhase = {
+      "name": "Picking Partner's Best Card",
+      "dealer": "1",
+      "trump": "Hearts",
+      "partner": "2",
+      "teams": [
+        {
+          "points": 0,
+          "players": [
+            {
+              "name": "Serena Howard",
+              "position": "1",
+              "hand": [
+                { "rank": "King", "suit": "Hearts" },
+                { "rank": "Jack", "suit": "Spades" },
+                { "rank": "9", "suit": "Spades" },
+                { "rank": "King", "suit": "Clubs" },
+                { "rank": "Jack", "suit": "Clubs" },
+                { "rank": "10", "suit": "Diamonds" },
+              ],
+            },
+            {
+              "name": "Alex Malcolm",
+              "position": "3",
+              "hand": [
+                { "rank": "King", "suit": "Spades" },
+                { "rank": "Ace", "suit": "Spades" },
+                { "rank": "Ace", "suit": "Diamonds" },
+                { "rank": "Queen", "suit": "Clubs" },
+                { "rank": "Ace", "suit": "Clubs" },
+                { "rank": "10", "suit": "Clubs" },
+              ],
+            },
+          ],
+        },
+        {
+          "points": 5,
+          "players": [
+            {
+              "name": "Julia Denman",
+              "position": "2",
+              "hand": [
+                { "rank": "Queen", "suit": "Diamonds" },
+                { "rank": "9", "suit": "Clubs" },
+                { "rank": "Queen", "suit": "Hearts" },
+                { "rank": "10", "suit": "Spades" },
+                { "rank": "9", "suit": "Diamonds" },
+                { "rank": "10", "suit": "Hearts" },
+                { "rank": "Queen", "suit": "Spades" },
+              ],
+            },
+            {
+              "name": "Alec Brickey",
+              "position": "4",
+              "hand": [
+                { "rank": "Ace", "suit": "Hearts" },
+                { "rank": "King", "suit": "Diamonds" },
+                { "rank": "Jack", "suit": "Diamonds" },
+                { "rank": "Jack", "suit": "Hearts" },
+                { "rank": "9", "suit": "Hearts" },
+              ],
+            },
+          ],
+        },
+      ],
+      "winningBid": {
+        "choice": "Partner's Best Card",
+        "playerPosition": "4",
+      },
+    };
+    const positionOfJulia: PlayerPosition = "2";
+    const choice: Option = { rank: "Queen", suit: "Hearts" };
+    const nextPhase = chooseOption(choice, phase, positionOfJulia);
+    assertNotEquals(
+      phase.name,
+      nextPhase.name,
+      `Expected not ${phase.name} but received ${nextPhase.name}`,
+    );
+  },
+});
+
 /*
 Test winning a trick
 Test placing a card in a trick
